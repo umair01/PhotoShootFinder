@@ -1,4 +1,4 @@
-import { FunctionComponent, Fragment } from "react";
+import { FunctionComponent, Fragment, useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import {
   Button,
@@ -22,15 +22,14 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 
 import { SessionFormProps, FormProps, Fields } from "../../../utils/models";
+import { getRegions, getSessions } from "../../../api/basicData";
 
-const regions = ["SF Bay Area", "New York", "Los Angeles"];
 // const subRegions: { [key: string]: string[] } = {
 //   "SF Bay Area": ["San Francisco", "San Jose", "Oakland"],
 //   "New York": ["Manhattan", "Brooklyn", "Queens"],
 //   "Los Angeles": ["Downtown LA", "Hollywood", "Santa Monica"],
 // };
 
-const sessionOptions = ["Option 1", "Option 2", "Option 3", "Option 4"];
 
 const useStyles = makeStyles((theme: Theme) => ({
   formContainer: {
@@ -78,7 +77,8 @@ const MyForm: FunctionComponent<FormProps> = ({
 }) => {
   // const [selectedRegion, setSelectedRegion] = useState("SF Bay Area");
   const classes = useStyles();
-
+  const [regions, setRegions] = useState<string[]>([]);
+  const [sessionTypes, setSessionTypes] = useState<string[]>([]);
   const handle30Days = () => {
     const currentDate = getValues("fromDate").add(30, "day");
     const nextDate = currentDate.add(30, "day");
@@ -93,6 +93,18 @@ const MyForm: FunctionComponent<FormProps> = ({
     setValue("toDate", nextDate);
   };
 
+  useEffect(() => {
+    getBasicData();
+  }, []);
+
+  const getBasicData = async () => {
+    const [region, sessions] = await Promise.all([
+      await getRegions(),
+      await getSessions(),
+    ]);
+    setRegions(region);
+    setSessionTypes(sessions);
+  };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Box rowGap={2} columnGap={0.5} className={classes.formContainer}>
@@ -103,7 +115,7 @@ const MyForm: FunctionComponent<FormProps> = ({
             control={control}
             render={({ field }) => (
               <Select {...field} label="region">
-                {regions.map((region, index) => (
+                {regions?.map((region, index) => (
                   <MenuItem key={index} value={region}>
                     {region}
                   </MenuItem>
@@ -136,8 +148,8 @@ const MyForm: FunctionComponent<FormProps> = ({
             name="session"
             control={control}
             render={({ field }) => (
-              <Select {...field} label="session" multiple>
-                {sessionOptions.map((option, index) => (
+              <Select {...field} label="session">
+                {sessionTypes.map((option, index) => (
                   <MenuItem key={index} value={option}>
                     {option}
                   </MenuItem>

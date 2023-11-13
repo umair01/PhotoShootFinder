@@ -7,6 +7,8 @@ import dayjs from "dayjs";
 
 import { Fields } from "../../utils/models";
 import { SessionForm, Cards, Maps, Loader } from "../../components";
+import { getPhotographerSessions } from "../../api/home";
+import { buildQueryString } from "../../utils";
 
 const MockSessionData = {
   SessionName: "Session",
@@ -46,8 +48,14 @@ const Home: FunctionComponent = () => {
     maps: false,
   });
 
-  const onSubmit = (data: Fields) => {
-    console.log(data);
+  const [photographerSessions,setPhotographerSessions]= useState([])
+
+  const onSubmit = async (data: Fields) => {
+  
+    const query = buildQueryString(data)
+    const res = await getPhotographerSessions(query)
+    setPhotographerSessions(res)
+  
   };
 
   const setView = (userView: boolean) => {
@@ -91,13 +99,7 @@ const Home: FunctionComponent = () => {
           <Cards
             region="San Francisco"
             results={22}
-            photoGrapherSession={[
-              MockSessionData,
-              MockSessionData,
-              MockSessionData,
-              MockSessionData,
-              MockSessionData,
-            ]}
+            photoGrapherSession={photographerSessions}
           />
         </Box>
         <Box
