@@ -81,7 +81,7 @@ const Cards: FunctionComponent<CardsProps> = ({
                       />
                       <LabelValue
                         label="Company"
-                        value={session.CompanyNotes as string | null}
+                        value={session.PhotographerCompanyName as string | null}
                       />
                       <LabelValue
                         label="Email"

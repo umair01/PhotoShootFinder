@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 export interface Fields {
   region: string;
   //   subRegion: string;
-  session: string[];
+  sessionType: string;
   fromDate: dayjs.Dayjs | null;
   toDate: dayjs.Dayjs | null;
 }
@@ -27,8 +27,8 @@ export interface SessionDetails {
   SessionDate: string | null;
   SessionType: string | null;
   Address: string | null;
-  LocationLongitude: string | null;
-  LocationLatitude: string | null;
+  LocationLongitude: number | null;
+  LocationLatitude: number | null;
   Region: string | null;
 }
 
@@ -56,4 +56,13 @@ export interface LabelValueProps {
   label: string;
   value: string | null;
   direction?: "row" | "column";
+}
+
+interface IMarkerPosition {
+  lat: number;
+  lng: number;
+}
+
+export interface MapsProps {
+  markerPositions: IMarkerPosition[];
 }

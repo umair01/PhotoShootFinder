@@ -145,7 +145,7 @@ const MyForm: FunctionComponent<FormProps> = ({
         <FormControl className={`${classes.height} ${classes.select}`}>
           <InputLabel>Session</InputLabel>
           <Controller
-            name="session"
+            name="sessionType"
             control={control}
             render={({ field }) => (
               <Select {...field} label="session">

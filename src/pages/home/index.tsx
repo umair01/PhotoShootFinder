@@ -1,45 +1,28 @@
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useMemo, useState } from "react";
 import { Box, Button, useMediaQuery, Theme, Typography } from "@mui/material";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
-import { useJsApiLoader } from "@react-google-maps/api";
+import {
+  GoogleMap,
+  Marker,
+  useJsApiLoader,
+  useLoadScript,
+} from "@react-google-maps/api";
 import dayjs from "dayjs";
 
-import { Fields } from "../../utils/models";
+import { Fields, PhotographerSessionDetails } from "../../utils/models";
 import { SessionForm, Cards, Maps, Loader } from "../../components";
 import { getPhotographerSessions } from "../../api/home";
 import { buildQueryString } from "../../utils";
 
-const MockSessionData = {
-  SessionName: "Session",
-  SessionDate: "23-11, 23-12",
-  SessionType: "Family",
-  Address: "Addrress",
-  LocationLongitude: "21",
-  LocationLatitude: "12",
-  Region: "Region",
-  PhotographersID: 1,
-  PhotographerCompanyName: "Company Name",
-  Instragram: "https://www.instagam.com",
-  Website: "https://www.google.com",
-  Facebook: "https://www.faceebook.com",
-  PreferredContactMethod: "Call",
-  CompanyNotes: "Notes",
-  PhotographerFirstName: "John",
-  PhotographerLastName: "Doe",
-  PhotographerPhone: "000000000000",
-  PhotographerEmail: "john@doe.com",
-};
-
 const Home: FunctionComponent = () => {
   const responsiveView = useMediaQuery("(max-width:1200px)");
-  const { isLoaded } = useJsApiLoader({
+  const { isLoaded } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_API_KEY,
   });
   const [formValues, setFormVlaues] = useState<Fields>({
     region: "SF Bay Area",
-    // subRegion: "",
-    session: [],
+    sessionType:"Family",
     fromDate: dayjs(),
     toDate: dayjs().add(90, "day"),
   });
@@ -48,14 +31,14 @@ const Home: FunctionComponent = () => {
     maps: false,
   });
 
-  const [photographerSessions,setPhotographerSessions]= useState([])
+  const [photographerSessions, setPhotographerSessions] = useState<
+    PhotographerSessionDetails[]
+  >([]);
 
   const onSubmit = async (data: Fields) => {
-  
-    const query = buildQueryString(data)
-    const res = await getPhotographerSessions(query)
-    setPhotographerSessions(res)
-  
+    const query = buildQueryString(data);
+    const res = await getPhotographerSessions(query);
+    setPhotographerSessions(res);
   };
 
   const setView = (userView: boolean) => {
@@ -97,8 +80,8 @@ const Home: FunctionComponent = () => {
           }}
         >
           <Cards
-            region="San Francisco"
-            results={22}
+            region={formValues.region}
+            results={photographerSessions?.length || 0}
             photoGrapherSession={photographerSessions}
           />
         </Box>
@@ -110,7 +93,14 @@ const Home: FunctionComponent = () => {
             background: (theme: Theme) => theme.palette.secondary.main,
           }}
         >
-          <Maps />
+          <Maps
+            markerPositions={photographerSessions.map((photographerSession) => {
+              return {
+                lat: photographerSession?.LocationLatitude || 0,
+                lng: photographerSession?.LocationLongitude || 0,
+              };
+            })}
+          />
         </Box>
       </Box>
       {responsiveView && (
