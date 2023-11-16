@@ -1,3 +1,14 @@
+@font-face {
+  font-family: 'Proxima Soft';
+  src:  url('./font/ProximaSoft-Bold.ttf') format('truetype'),
+        url('./font/ProximaSoft-ExtraBold.ttf') format('truetype'),
+        url('./font/ProximaSoft-Light.ttf') format('truetype'),
+        url('./font/ProximaSoft-Medium.ttf') format('truetype'),
+        url('./font/ProximaSoft-Regular.ttf') format('truetype'),
+        url('./font/ProximaSoft-SemiBold.ttf') format('truetype'),
+        url('./font/ProximaSoft-Thin.ttf') format('truetype');
+}
+
 body {
   margin: 0;
   overflow: hidden;
@@ -10,6 +21,7 @@ html, body, #root {
 * {
   box-sizing: border-box;
 }
+
 .map-container {
   height: 100%;
   width: 100%;

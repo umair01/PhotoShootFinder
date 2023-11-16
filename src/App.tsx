@@ -22,7 +22,6 @@ const App: FunctionComponent = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about-us" element={<ComingSoon />} />
-            <Route path="/session" element={<ComingSoon />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Paper>

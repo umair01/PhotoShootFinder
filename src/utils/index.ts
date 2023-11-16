@@ -16,3 +16,14 @@ export const buildQueryString = (params: Record<string, any>): string => {
 
   return queryString;
 };
+
+export const getAllQueryParams = (): Record<string, string> => {
+  const searchParams = new URLSearchParams(window.location.search);
+  const queryParams: Record<string, string> = {};
+
+  for (const [key, value] of searchParams.entries()) {
+    queryParams[key] = value;
+  }
+
+  return queryParams;
+};

@@ -1,18 +1,9 @@
-import { Fragment, FunctionComponent } from "react";
-import {
-  Stack,
-  Box,
-  Typography,
-  List,
-  ListItem,
-  Card,
-  Link,
-  IconButton,
-  Theme,
-} from "@mui/material";
+import { FunctionComponent } from "react";
+import { Box, Typography, List, ListItem, Link, Theme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import FacebookIcon from "@mui/icons-material/Facebook";
+import SwipeableTextMobileStepper from "../imageCarousel";
 
 import {
   CardsProps,
@@ -51,6 +42,7 @@ const Cards: FunctionComponent<CardsProps> = ({
   photoGrapherSession,
 }) => {
   const classes = useStyles();
+
   return (
     <Box className={classes.mainContainer}>
       <Box my={1} mx={2}>
@@ -59,66 +51,46 @@ const Cards: FunctionComponent<CardsProps> = ({
           Showing {results} available sessions
         </Typography>
       </Box>
-      <List className={classes.listContainer}>
+      <List className={classes.listContainer} id="listt" >
         {photoGrapherSession.map(
           (session: PhotographerSessionDetails, index: number) => {
             return (
               <ListItem className={classes.cardsContainer} key={index}>
-                <Card className={classes.card} variant="outlined">
-                  <Box columnGap={1} className={classes.cardStackContainer}>
-                    <Stack className={classes.cardStack1} flexGrow={2}>
-                      <LabelValue
-                        label="Session Name"
-                        value={session.SessionName}
-                      />
-                      <LabelValue
-                        label="Photographer"
-                        value={
-                          session.PhotographerFirstName +
-                          " " +
-                          session.PhotographerLastName
-                        }
-                      />
-                      <LabelValue
-                        label="Company"
-                        value={session.PhotographerCompanyName as string | null}
-                      />
-                      <LabelValue
-                        label="Email"
-                        value={session.PhotographerEmail as string | null}
-                      />
-                      <LabelValue
-                        label="Phone"
-                        value={session.PhotographerPhone as string | null}
-                      />
-                      <LabelValue label="Location" value={session.Address} />
-                      <LabelValue
-                        label="How to Book"
-                        value={session.PreferredContactMethod as string | null}
-                      />
-                    </Stack>
-                    <Stack className={classes.cardStack2} flexGrow={2}>
-                      <LabelValue
-                        label="Event Dates"
-                        value={session.SessionDate}
-                        direction="column"
-                      />
-                      <LabelValue
-                        label="Session Types"
-                        value={session.SessionType}
-                        direction="column"
-                      />
-                    </Stack>
-                    <Stack className={classes.cardStack3} flexGrow={1}>
+                <SwipeableTextMobileStepper />
+                <Box className={classes.card}>
+                  <Typography variant="h6">{session.SessionName}</Typography>
+                  <Typography variant="caption">{session.Address}</Typography>
+                  <Typography variant="body1">{session.SessionDate}</Typography>
+                  <Box className={classes.additionalInfoContainer}>
+                    <LabelValue
+                      label="Photographer"
+                      value={
+                        session.PhotographerFirstName +
+                        " " +
+                        session.PhotographerLastName
+                      }
+                    />
+                    <LabelValue
+                      label="Company"
+                      value={session.PhotographerCompanyName as string | null}
+                    />
+                    <LabelValue
+                      label="Email"
+                      value={session.PhotographerEmail as string | null}
+                    />
+                    <LabelValue
+                      label="Phone"
+                      value={session.PhotographerPhone as string | null}
+                    />
+
+                    <Box className={classes.socialContainer}>
                       {session.Instragram && (
                         <Link
                           target="_blank"
                           rel="noreferrer"
                           href={session.Instragram}
                         >
-                          <IconButton>
-                            <InstagramIcon />
-                          </IconButton>
+                          <InstagramIcon />
                         </Link>
                       )}
                       {session.Facebook && (
@@ -127,9 +99,7 @@ const Cards: FunctionComponent<CardsProps> = ({
                           rel="noreferrer"
                           href={session.Facebook}
                         >
-                          <IconButton>
-                            <FacebookIcon />
-                          </IconButton>
+                          <FacebookIcon />
                         </Link>
                       )}
                       {session.Website && (
@@ -138,14 +108,12 @@ const Cards: FunctionComponent<CardsProps> = ({
                           rel="noreferrer"
                           href={session.Website}
                         >
-                          <Typography fontSize={14} variant="body1">
-                            Website
-                          </Typography>
+                          <Typography fontSize={14}>Website</Typography>
                         </Link>
                       )}
-                    </Stack>
+                    </Box>
                   </Box>
-                </Card>
+                </Box>
               </ListItem>
             );
           }
@@ -190,58 +158,34 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: "20px 0",
   },
   cardsContainer: {
+    display: "flex",
+    borderBottom: "1px solid",
+    columnGap: "20px",
+    padding: "10px",
     [theme.breakpoints.down("sm")]: {
-      display: "flex",
-      justifyContent: "center",
+      flexDirection: "column",
+      rowGap: "10px",
     },
   },
   card: {
     display: "flex",
-    minWidth: "320px",
-    maxWidth: "500px",
-    height: "fit-content",
-    borderRadius: "5px",
-    borderColor: theme.palette.primary.main + " !important",
-    transition: "box-shadow .3s",
-    "&:hover": {
-      boxShadow: "0 0 11px rgba(33,33,33,.2)",
-    },
-  },
-  cardStackContainer: {
-    height: "100%",
+    flexDirection: "column",
     width: "100%",
+
+    height: "248px",
+    [theme.breakpoints.down("sm")]: {
+      height: "100%",
+    },
+  },
+  additionalInfoContainer: {
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
+  },
+  socialContainer: {
     display: "flex",
-    [theme.breakpoints.down("sm")]: {
-      flexDirection: "column",
-    },
-  },
-  cardStack1: {
-    padding: "10px",
-    height: "100%",
-    justifyContent: "flex-start",
-    boxSizing: "border-box",
-    [theme.breakpoints.down("sm")]: {
-      borderBottom: `1px solid ${theme.palette.primary.main}`,
-    },
-  },
-  cardStack2: {
-    padding: "10px",
-    height: "100%",
-    justifyContent: "flex-end",
-    boxSizing: "border-box",
-    [theme.breakpoints.down("sm")]: {
-      borderBottom: `1px solid ${theme.palette.primary.main}`,
-      flexDirection: "row !important",
-    },
-  },
-  cardStack3: {
-    padding: "10px",
-    height: "100%",
-    justifyContent: "space-evenly",
+    columnGap: "15px",
+    paddingTop: "5px",
     alignItems: "center",
-    boxSizing: "border-box",
-    [theme.breakpoints.down("sm")]: {
-      flexDirection: "row !important",
-    },
   },
 }));

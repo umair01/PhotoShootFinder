@@ -13,13 +13,15 @@ export interface Fields {
 export interface SessionFormProps {
   onSubmit: (data: Fields) => void;
   defaultValues?: Fields;
+  regions:string[];
+  sessions:string[]
 }
 
 export interface FormProps extends Omit<SessionFormProps, "defaultValues"> {
-  handleSubmit: any;
   control: any;
   setValue: any;
   getValues: any;
+  watch: any;
 }
 
 export interface SessionDetails {

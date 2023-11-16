@@ -1,11 +1,16 @@
-import { FunctionComponent, Fragment, useEffect, useState } from "react";
-import { useForm, Controller } from "react-hook-form";
+import {
+  FunctionComponent,
+  Fragment,
+  useEffect,
+  useState,
+  useRef,
+} from "react";
+import { useForm, Controller, useWatch } from "react-hook-form";
 import {
   Button,
   Select,
   MenuItem,
   FormControl,
-  InputLabel,
   Box,
   Theme,
   Accordion,
@@ -19,17 +24,10 @@ import { ExpandMore } from "@mui/icons-material";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs from "dayjs";
 
 import { SessionFormProps, FormProps, Fields } from "../../../utils/models";
 import { getRegions, getSessions } from "../../../api/basicData";
-
-// const subRegions: { [key: string]: string[] } = {
-//   "SF Bay Area": ["San Francisco", "San Jose", "Oakland"],
-//   "New York": ["Manhattan", "Brooklyn", "Queens"],
-//   "Los Angeles": ["Downtown LA", "Hollywood", "Santa Monica"],
-// };
-
+import { Loader } from "../..";
 
 const useStyles = makeStyles((theme: Theme) => ({
   formContainer: {
@@ -42,24 +40,34 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   buttonContainer: {
     display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
     alignItems: "center",
-    marginLeft: 10,
+    justifyContent: "center",
+    padding: "0 10px",
+    [theme.breakpoints.down("md")]: {
+      width: "100%",
+    },
   },
   height: {
     height: 56,
   },
+  inputs: { borderRadius: 0 },
   select: {
     minWidth: "170px !important",
   },
+  regionSelect: {
+    borderRadius: 0,
+    borderTopLeftRadius: "30px",
+    borderBottomLeftRadius: "30px",
+  },
+
   datePicker: {
     width: 170,
   },
   button: {
-    width: 105,
-    height: 30,
-    fontSize: "12px !important",
+    width: 120,
+    height: 56,
+    borderRadius: 30,
+    fontSize: "14px !important",
     padding: "6px !important",
     color: theme.palette.common.white + "!important",
   },
@@ -70,15 +78,30 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const MyForm: FunctionComponent<FormProps> = ({
   onSubmit,
-  handleSubmit,
   control,
   setValue,
   getValues,
+  watch,
+  regions,
+  sessions
 }) => {
-  // const [selectedRegion, setSelectedRegion] = useState("SF Bay Area");
   const classes = useStyles();
-  const [regions, setRegions] = useState<string[]>([]);
-  const [sessionTypes, setSessionTypes] = useState<string[]>([]);
+  const responsiveInputs = useMediaQuery("(max-width:700px)");
+ 
+  const initialRender = useRef(0);
+
+  useEffect(() => {
+    if (initialRender.current === 0) {
+      initialRender.current++;
+      return;
+    } else if (initialRender.current === 1) {
+      initialRender.current++;
+      return;
+    } else {
+      onSubmit(getValues());
+    }
+  }, [watch]);
+
   const handle30Days = () => {
     const currentDate = getValues("fromDate").add(30, "day");
     const nextDate = currentDate.add(30, "day");
@@ -93,135 +116,127 @@ const MyForm: FunctionComponent<FormProps> = ({
     setValue("toDate", nextDate);
   };
 
-  useEffect(() => {
-    getBasicData();
-  }, []);
 
-  const getBasicData = async () => {
-    const [region, sessions] = await Promise.all([
-      await getRegions(),
-      await getSessions(),
-    ]);
-    setRegions(region);
-    setSessionTypes(sessions);
-  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Box rowGap={2} columnGap={0.5} className={classes.formContainer}>
-        <FormControl className={classes.select}>
-          <InputLabel>Region</InputLabel>
-          <Controller
-            name="region"
-            control={control}
-            render={({ field }) => (
-              <Select {...field} label="region">
-                {regions?.map((region, index) => (
-                  <MenuItem key={index} value={region}>
-                    {region}
-                  </MenuItem>
-                ))}
-              </Select>
-            )}
-          />
-        </FormControl>
+    <Box rowGap={2} className={classes.formContainer}>
+      <FormControl className={`${classes.height} ${classes.select}`}>
+        <Controller
+          name="region"
+          control={control}
+          render={({ field }) => (
+            <Select {...field} className={classes.regionSelect}>
+              {regions?.map((region, index) => (
+                <MenuItem key={index} value={region}>
+                  {region}
+                </MenuItem>
+              ))}
+            </Select>
+          )}
+        />
+      </FormControl>
 
-        {/* <FormControl className={`${classes.height} ${classes.select}`}>
-          <InputLabel>Subregion</InputLabel>
-          <Controller
-            name="subRegion"
-            control={control}
-            render={({ field }) => (
-              <Select {...field} label="subregion">
-                {subRegions[selectedRegion]?.map((subRegion, index) => (
-                  <MenuItem key={index} value={subRegion}>
-                    {subRegion}
-                  </MenuItem>
-                ))}
-              </Select>
-            )}
-          />
-        </FormControl> */}
-
-        <FormControl className={`${classes.height} ${classes.select}`}>
-          <InputLabel>Session</InputLabel>
-          <Controller
-            name="sessionType"
-            control={control}
-            render={({ field }) => (
-              <Select {...field} label="session">
-                {sessionTypes.map((option, index) => (
-                  <MenuItem key={index} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </Select>
-            )}
-          />
-        </FormControl>
-
-        <FormControl className={`${classes.height} ${classes.datePicker}`}>
+      <FormControl className={classes.select}>
+        <Controller
+          name="sessionType"
+          control={control}
+          render={({ field }) => (
+            <Select
+              {...field}
+              sx={{
+                borderRadius: 0,
+                borderTopRightRadius: responsiveInputs ? "30px" : 0,
+                borderBottomRightRadius: responsiveInputs ? "30px" : 0,
+              }}
+            >
+              {sessions.map((option, index) => (
+                <MenuItem key={index} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </Select>
+          )}
+        />
+      </FormControl>
+      <Box>
+        <FormControl className={classes.datePicker}>
           <Controller
             name="fromDate"
             control={control}
             render={({ field }) => (
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker {...field} disablePast label="From Date" />
+                <DatePicker
+                  {...field}
+                  disablePast
+                  sx={{
+                    ".MuiOutlinedInput-root": {
+                      borderRadius: 0,
+                      borderTopLeftRadius: responsiveInputs ? "30px" : 0,
+                      borderBottomLeftRadius: responsiveInputs ? "30px" : 0,
+                    },
+                  }}
+                />
               </LocalizationProvider>
             )}
           />
         </FormControl>
 
-        <FormControl className={`${classes.height} ${classes.datePicker}`}>
+        <FormControl className={classes.datePicker}>
           <Controller
             name="toDate"
             control={control}
             render={({ field }) => (
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker {...field} disablePast label="To Date" />
+                <DatePicker
+                  {...field}
+                  disablePast
+                  sx={{
+                    ".MuiOutlinedInput-root": {
+                      borderRadius: 0,
+                      borderTopRightRadius: "30px",
+                      borderBottomRightRadius: "30px",
+                    },
+                  }}
+                />
               </LocalizationProvider>
             )}
           />
         </FormControl>
-        <Box rowGap={2} columnGap={0.5} className={classes.buttonContainer}>
-          <Button
-            className={classes.button}
-            variant="contained"
-            color="primary"
-            onClick={handle30Days}
-          >
-            Next 30 Days
-          </Button>
-          <Button
-            className={classes.button}
-            variant="contained"
-            color="primary"
-            onClick={handle90Days}
-          >
-            Next 90 Days
-          </Button>
-          <Button
-            className={classes.button}
-            type="submit"
-            variant="contained"
-            color="primary"
-          >
-            Submit
-          </Button>
-        </Box>
       </Box>
-    </form>
+      <Box rowGap={2} columnGap={2} className={classes.buttonContainer}>
+        <Button
+          className={classes.button}
+          variant="contained"
+          color="primary"
+          onClick={handle30Days}
+        >
+          Next 30 Days
+        </Button>
+        <Button
+          className={classes.button}
+          variant="contained"
+          color="primary"
+          onClick={handle90Days}
+        >
+          Next 90 Days
+        </Button>
+      </Box>
+    </Box>
   );
 };
 
 const SessionFilterForm: FunctionComponent<SessionFormProps> = ({
   onSubmit,
   defaultValues = {},
+  regions,
+  sessions
 }) => {
   const classes = useStyles();
   const isMobile = useMediaQuery("(max-width:780px)");
-  const { handleSubmit, control, setValue, getValues } = useForm<Fields>({
+  const { control, setValue, getValues } = useForm<Fields>({
     defaultValues: { ...defaultValues },
   });
+  const watch = useWatch({ control });
 
   return (
     <Fragment>
@@ -236,20 +251,24 @@ const SessionFilterForm: FunctionComponent<SessionFormProps> = ({
           <AccordionDetails sx={{ px: 0 }}>
             <MyForm
               onSubmit={onSubmit}
-              handleSubmit={handleSubmit}
               control={control}
               setValue={setValue}
               getValues={getValues}
+              watch={watch}
+              regions={regions}
+              sessions={sessions}
             />
           </AccordionDetails>
         </Accordion>
       ) : (
         <MyForm
           onSubmit={onSubmit}
-          handleSubmit={handleSubmit}
           control={control}
           setValue={setValue}
           getValues={getValues}
+          watch={watch}
+          regions={regions}
+          sessions={sessions}
         />
       )}
     </Fragment>

@@ -1,4 +1,4 @@
-import { FunctionComponent, useMemo, useState } from "react";
+import { FunctionComponent, useEffect, useRef, useState } from "react";
 import { Box, Button, useMediaQuery, Theme, Typography } from "@mui/material";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
@@ -14,15 +14,17 @@ import { Fields, PhotographerSessionDetails } from "../../utils/models";
 import { SessionForm, Cards, Maps, Loader } from "../../components";
 import { getPhotographerSessions } from "../../api/home";
 import { buildQueryString } from "../../utils";
+import { getRegions, getSessions } from "../../api/basicData";
+import { LIMIT } from "../../utils/constants";
 
 const Home: FunctionComponent = () => {
   const responsiveView = useMediaQuery("(max-width:1200px)");
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_API_KEY,
   });
-  const [formValues, setFormVlaues] = useState<Fields>({
-    region: "SF Bay Area",
-    sessionType:"Family",
+  const [formValues, setFormValues] = useState<Fields>({
+    sessionType: "",
+    region: "",
     fromDate: dayjs(),
     toDate: dayjs().add(90, "day"),
   });
@@ -31,14 +33,50 @@ const Home: FunctionComponent = () => {
     maps: false,
   });
 
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(true);
   const [photographerSessions, setPhotographerSessions] = useState<
     PhotographerSessionDetails[]
   >([]);
+  const [regions, setRegions] = useState<string[]>([]);
+  const [sessions, setSessions] = useState<string[]>([]);
+  const [loadData, setLoadData] = useState(false);
+  const [lazyLoadingData, setLazyLoadingData] = useState(false);
 
-  const onSubmit = async (data: Fields) => {
-    const query = buildQueryString(data);
-    const res = await getPhotographerSessions(query);
-    setPhotographerSessions(res);
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const onSubmit = async (data: Fields, lazyLoad = false) => {
+    const query = buildQueryString({ ...data, page: lazyLoad ? page : 1 });
+    if (lazyLoad) {
+      await lazyLoadPhotographersData(query);
+    } else {
+      await getPhotographerData(query);
+    }
+    setFormValues(data);
+  };
+
+  const getPhotographerData = async (query?: string) => {
+    try {
+      setLoading(true);
+      const res = await getPhotographerSessions(query);
+      setLoading(false);
+      setLoadData(res?.length >= LIMIT);
+      setPhotographerSessions(res);
+    } catch (err) {
+      console.log("something went wrong", err);
+    }
+  };
+
+  const lazyLoadPhotographersData = async (query: string) => {
+    try {
+      setLazyLoadingData(true);
+      const res = await getPhotographerSessions(query);
+      setLazyLoadingData(false);
+      setLoadData(res?.length >= LIMIT);
+      setPhotographerSessions([...photographerSessions, ...res]);
+    } catch (err) {
+      console.log("something went wrong", err);
+    }
   };
 
   const setView = (userView: boolean) => {
@@ -57,7 +95,39 @@ const Home: FunctionComponent = () => {
     });
   };
 
-  if (!isLoaded) return <Loader />;
+  const handleScroll = async (e: any) => {
+    const bottom =
+      Math.round(e.target.scrollHeight - e.target.scrollTop) ===
+      e.target.clientHeight;
+    if (bottom) {
+      setPage((page) => page + 1);
+      if (loadData) {
+        await onSubmit(formValues, true);
+        if (cardRef.current) {
+          console.log("bottom");
+          cardRef?.current?.scrollIntoView({
+            behavior: "smooth",
+          });
+        }
+      }
+    }
+  };
+
+  const getBasicData = async () => {
+    const [region, sessions] = await Promise.all([
+      await getRegions(),
+      await getSessions(),
+    ]);
+    setRegions(region);
+    setSessions(sessions);
+  };
+
+  useEffect(() => {
+    getBasicData();
+    getPhotographerData(`page=${page}`);
+  }, []);
+
+  if (!isLoaded || loading) return <Loader />;
 
   return (
     <Box
@@ -68,7 +138,12 @@ const Home: FunctionComponent = () => {
         overflow: "hidden",
       }}
     >
-      <SessionForm onSubmit={onSubmit} defaultValues={formValues} />
+      <SessionForm
+        onSubmit={onSubmit}
+        defaultValues={formValues}
+        regions={regions}
+        sessions={sessions}
+      />
       <Box sx={{ display: "flex", height: "100%", overflow: "hidden" }}>
         <Box
           sx={{
@@ -78,12 +153,30 @@ const Home: FunctionComponent = () => {
             height: "100%",
             overflowY: "auto",
           }}
+          onScroll={handleScroll}
+          ref={cardRef}
         >
-          <Cards
-            region={formValues.region}
-            results={photographerSessions?.length || 0}
-            photoGrapherSession={photographerSessions}
-          />
+          {photographerSessions?.length || true ? (
+            <>
+              <Cards
+                region={formValues.region}
+                results={photographerSessions?.length || 0}
+                photoGrapherSession={photographerSessions}
+              />
+              {lazyLoadingData && <div>Loading....</div>}
+            </>
+          ) : (
+            <Box
+              display="flex"
+              flexDirection="column"
+              height="100%"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <Typography variant="h6">Address Not Found.</Typography>
+              <Typography>Please try a different location.</Typography>
+            </Box>
+          )}
         </Box>
         <Box
           sx={{
