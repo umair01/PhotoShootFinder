@@ -156,7 +156,7 @@ const Home: FunctionComponent = () => {
           onScroll={handleScroll}
           ref={cardRef}
         >
-          {photographerSessions?.length || true ? (
+          {photographerSessions?.length  ? (
             <>
               <Cards
                 region={formValues.region}
