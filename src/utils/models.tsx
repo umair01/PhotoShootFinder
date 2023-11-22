@@ -13,8 +13,8 @@ export interface Fields {
 export interface SessionFormProps {
   onSubmit: (data: Fields) => void;
   defaultValues?: Fields;
-  regions:string[];
-  sessions:string[]
+  regions: string[];
+  sessions: string[];
 }
 
 export interface FormProps extends Omit<SessionFormProps, "defaultValues"> {
@@ -61,6 +61,9 @@ export interface LabelValueProps {
 }
 
 interface IMarkerPosition {
+  sessionName: string | null;
+  address: string | null;
+  img: string;
   lat: number;
   lng: number;
 }

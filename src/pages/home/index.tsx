@@ -2,12 +2,7 @@ import { FunctionComponent, useEffect, useRef, useState } from "react";
 import { Box, Button, useMediaQuery, Theme, Typography } from "@mui/material";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
-import {
-  GoogleMap,
-  Marker,
-  useJsApiLoader,
-  useLoadScript,
-} from "@react-google-maps/api";
+import { useLoadScript } from "@react-google-maps/api";
 import dayjs from "dayjs";
 
 import { Fields, PhotographerSessionDetails } from "../../utils/models";
@@ -156,7 +151,7 @@ const Home: FunctionComponent = () => {
           onScroll={handleScroll}
           ref={cardRef}
         >
-          {photographerSessions?.length  ? (
+          {photographerSessions?.length ? (
             <>
               <Cards
                 region={formValues.region}
@@ -189,6 +184,9 @@ const Home: FunctionComponent = () => {
           <Maps
             markerPositions={photographerSessions.map((photographerSession) => {
               return {
+                sessionName: photographerSession?.SessionName,
+                address: photographerSession?.Address,
+                img: "https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60",
                 lat: photographerSession?.LocationLatitude || 0,
                 lng: photographerSession?.LocationLongitude || 0,
               };

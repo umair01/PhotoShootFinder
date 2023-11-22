@@ -1,7 +1,7 @@
 import { FunctionComponent } from "react";
 import { Box, Typography, List, ListItem, Link, Theme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import InstagramIcon from "@mui/icons-material/Instagram";
+import InstagramIcon from "../../../assets/instagram.svg";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import SwipeableTextMobileStepper from "../imageCarousel";
 
@@ -51,7 +51,7 @@ const Cards: FunctionComponent<CardsProps> = ({
           Showing {results} available sessions
         </Typography>
       </Box>
-      <List className={classes.listContainer} id="listt" >
+      <List className={classes.listContainer} id="listt">
         {photoGrapherSession.map(
           (session: PhotographerSessionDetails, index: number) => {
             return (
@@ -65,9 +65,12 @@ const Cards: FunctionComponent<CardsProps> = ({
                     <LabelValue
                       label="Photographer"
                       value={
-                        session.PhotographerFirstName +
-                        " " +
-                        session.PhotographerLastName
+                        (session.PhotographerFirstName
+                          ? session.PhotographerFirstName
+                          : "") +
+                        (session.PhotographerLastName
+                          ? " " + session.PhotographerLastName
+                          : "")
                       }
                     />
                     <LabelValue
@@ -90,7 +93,7 @@ const Cards: FunctionComponent<CardsProps> = ({
                           rel="noreferrer"
                           href={session.Instragram}
                         >
-                          <InstagramIcon />
+                          <img width={24} height={24} src={InstagramIcon} />
                         </Link>
                       )}
                       {session.Facebook && (
@@ -99,7 +102,7 @@ const Cards: FunctionComponent<CardsProps> = ({
                           rel="noreferrer"
                           href={session.Facebook}
                         >
-                          <FacebookIcon />
+                          <FacebookIcon sx={{ color: "#0766ff" }} />
                         </Link>
                       )}
                       {session.Website && (
@@ -128,10 +131,7 @@ export default Cards;
 const useStyles = makeStyles((theme: Theme) => ({
   labelValueContainer: {
     display: "flex",
-    width: "178px",
-    [theme.breakpoints.down("sm")]: {
-      width: "100%",
-    },
+    width: "100%",
   },
   labelContainer: {
     display: "flex",

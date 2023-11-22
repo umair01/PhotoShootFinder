@@ -1,17 +1,17 @@
-import { FunctionComponent, Fragment, useMemo } from "react";
+import { FunctionComponent, Fragment, useMemo, useState } from "react";
 import { Box, Typography } from "@mui/material";
-import { GoogleMap, MarkerF } from "@react-google-maps/api";
+import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
 import { MapsProps } from "../../../utils/models";
 
 const Maps: FunctionComponent<MapsProps> = ({ markerPositions }) => {
+  const [activeMarker, setActiveMarker] = useState<number | null>(null);
   const center = useMemo(() => ({ lat: 18.52043, lng: 73.856743 }), []);
-  const customMarker = {
-    path: "M29.395,0H17.636c-3.117,0-5.643,3.467-5.643,6.584v34.804c0,3.116,2.526,5.644,5.643,5.644h11.759   c3.116,0,5.644-2.527,5.644-5.644V6.584C35.037,3.467,32.511,0,29.395,0z M34.05,14.188v11.665l-2.729,0.351v-4.806L34.05,14.188z    M32.618,10.773c-1.016,3.9-2.219,8.51-2.219,8.51H16.631l-2.222-8.51C14.41,10.773,23.293,7.755,32.618,10.773z M15.741,21.713   v4.492l-2.73-0.349V14.502L15.741,21.713z M13.011,37.938V27.579l2.73,0.343v8.196L13.011,37.938z M14.568,40.882l2.218-3.336   h13.771l2.219,3.336H14.568z M31.321,35.805v-7.872l2.729-0.355v10.048L31.321,35.805",
-    fillColor: "red",
-    fillOpacity: 2,
-    strokeWeight: 1,
-    rotation: 0,
-    scale: 1,
+
+  const handleActiveMarker = (marker: number | null) => {
+    if (marker === activeMarker) {
+      return;
+    }
+    setActiveMarker(marker);
   };
 
   return (
@@ -20,17 +20,37 @@ const Maps: FunctionComponent<MapsProps> = ({ markerPositions }) => {
         mapContainerClassName="map-container"
         center={markerPositions[0] || center}
         zoom={5}
+        onClick={() => setActiveMarker(null)}
       >
-        {markerPositions.map((position) => {
+        {markerPositions.map((position, index) => {
           return (
-            <MarkerF
+            <Marker
+              key={index}
               position={{ lat: position.lat, lng: position.lng }}
               icon={"http://maps.google.com/mapfiles/ms/icons/green-dot.png"}
-            />
+              onClick={() => handleActiveMarker(index)}
+            >
+              {activeMarker === index ? (
+                <InfoWindow onCloseClick={() => setActiveMarker(null)}>
+                  <Box
+                    display="flex"
+                    flexDirection="column"
+                    width="200px"
+                    height="225px"
+                    rowGap={0.5}
+                  >
+                    <img height="150px" width="200px" src={position.img} />
+                    <Typography variant="h6">{position.sessionName}</Typography>
+                    <Typography variant="caption">
+                      {position.address}
+                    </Typography>
+                  </Box>
+                </InfoWindow>
+              ) : null}
+            </Marker>
           );
         })}
       </GoogleMap>
-      <Typography>Maps</Typography>
     </Fragment>
   );
 };

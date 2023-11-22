@@ -7,7 +7,6 @@ import {
   Typography,
   Menu,
   Container,
-  Button,
   MenuItem,
   Theme,
 } from "@mui/material";
@@ -26,7 +25,7 @@ const Navbar: FunctionComponent = () => {
   const [activePage, setActivePage] = useState<string>(location.pathname);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    console.log("dasa")
+    console.log("dasa");
     setAnchorElNav(event.currentTarget);
   };
 
@@ -88,7 +87,7 @@ const Navbar: FunctionComponent = () => {
               open={Boolean(anchorElNav)}
               onClose={() => handleCloseNavMenu()}
               sx={{
-                display: { xs: "block", md: "none" },
+                display: "block",
               }}
             >
               {pages.map((page, index) => (
