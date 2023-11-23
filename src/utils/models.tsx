@@ -29,8 +29,8 @@ export interface SessionDetails {
   SessionDate: string | null;
   SessionType: string | null;
   Address: string | null;
-  LocationLongitude: number | null;
-  LocationLatitude: number | null;
+  LocationLongitude: string | null;
+  LocationLatitude: string | null;
   Region: string | null;
 }
 
@@ -46,6 +46,7 @@ export interface PhotographerSessionDetails extends SessionDetails {
   PhotographerLastName?: string | null;
   PhotographerPhone?: string | null;
   PhotographerEmail?: string | null;
+  Location: string | null;
 }
 
 export interface CardsProps {

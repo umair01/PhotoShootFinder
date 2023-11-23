@@ -122,7 +122,7 @@ const Home: FunctionComponent = () => {
     getPhotographerData(`page=${page}`);
   }, []);
 
-  if (!isLoaded || loading) return <Loader />;
+  if (!isLoaded && loading) return <Loader />;
 
   return (
     <Box
@@ -183,12 +183,19 @@ const Home: FunctionComponent = () => {
         >
           <Maps
             markerPositions={photographerSessions.map((photographerSession) => {
+            
               return {
                 sessionName: photographerSession?.SessionName,
-                address: photographerSession?.Address,
+                address:
+                  photographerSession?.Address ||
+                  photographerSession.Location ||
+                  "",
                 img: "https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60",
-                lat: photographerSession?.LocationLatitude || 0,
-                lng: photographerSession?.LocationLongitude || 0,
+                lat:
+                  parseFloat(photographerSession?.LocationLatitude || "0") || 0,
+                lng:
+                  parseFloat(photographerSession?.LocationLongitude || "0") ||
+                  0,
               };
             })}
           />
