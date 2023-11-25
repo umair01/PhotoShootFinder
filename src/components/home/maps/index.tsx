@@ -1,11 +1,10 @@
-import { FunctionComponent, Fragment, useMemo, useState } from "react";
+import { FunctionComponent, Fragment, useState } from "react";
 import { Box, Typography } from "@mui/material";
 import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
 import { MapsProps } from "../../../utils/models";
 
-const Maps: FunctionComponent<MapsProps> = ({ markerPositions }) => {
+const Maps: FunctionComponent<MapsProps> = ({ markerPositions, center }) => {
   const [activeMarker, setActiveMarker] = useState<number | null>(null);
-  const center = useMemo(() => ({ lat: 18.52043, lng: 73.856743 }), []);
 
   const handleActiveMarker = (marker: number | null) => {
     if (marker === activeMarker) {
@@ -18,7 +17,7 @@ const Maps: FunctionComponent<MapsProps> = ({ markerPositions }) => {
     <Fragment>
       <GoogleMap
         mapContainerClassName="map-container"
-        center={markerPositions[0] || center}
+        center={{ lat: center?.Latitude || 0, lng: center?.Longitude || 0 }}
         zoom={5}
         onClick={() => setActiveMarker(null)}
       >

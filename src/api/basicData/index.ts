@@ -1,18 +1,24 @@
-import { AxiosResponse } from "axios";
 import api from "../index";
+import { Region } from "../../utils/models";
 
 const baseUrl = "/region";
 
 // ======================================== Get Regions Api ========================================
 
-export const getRegions = async (): Promise<string[]> => {
+export const getRegions = async (): Promise<Region[]> => {
   try {
     const { data: regions } = await api({
       method: "get",
       url: `${baseUrl}`,
     });
-    console.log("regions", regions);
-    return regions?.map((region: { Region: string }) => region.Region);
+
+    return regions.map((region: Region) => {
+      return {
+        ...region,
+        Latitude: Number(region.Latitude),
+        Longitude: Number(region.Longitude),
+      };
+    });
   } catch (err) {
     console.log("err", err);
     throw err;

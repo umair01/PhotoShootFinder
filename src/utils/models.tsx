@@ -13,7 +13,7 @@ export interface Fields {
 export interface SessionFormProps {
   onSubmit: (data: Fields) => void;
   defaultValues?: Fields;
-  regions: string[];
+  regions: Region[];
   sessions: string[];
 }
 
@@ -68,7 +68,17 @@ interface IMarkerPosition {
   lat: number;
   lng: number;
 }
-
+interface Center {
+  Longitude: number;
+  Latitude: number;
+}
 export interface MapsProps {
   markerPositions: IMarkerPosition[];
+  center: Center | undefined;
+}
+
+export interface Region {
+  Region: string;
+  Longitude: number;
+  Latitude: number;
 }

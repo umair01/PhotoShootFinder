@@ -5,7 +5,7 @@ import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import { useLoadScript } from "@react-google-maps/api";
 import dayjs from "dayjs";
 
-import { Fields, PhotographerSessionDetails } from "../../utils/models";
+import { Fields, PhotographerSessionDetails, Region } from "../../utils/models";
 import { SessionForm, Cards, Maps, Loader } from "../../components";
 import { getPhotographerSessions } from "../../api/home";
 import { buildQueryString } from "../../utils";
@@ -33,7 +33,7 @@ const Home: FunctionComponent = () => {
   const [photographerSessions, setPhotographerSessions] = useState<
     PhotographerSessionDetails[]
   >([]);
-  const [regions, setRegions] = useState<string[]>([]);
+  const [regions, setRegions] = useState<Region[]>([]);
   const [sessions, setSessions] = useState<string[]>([]);
   const [loadData, setLoadData] = useState(false);
   const [lazyLoadingData, setLazyLoadingData] = useState(false);
@@ -198,6 +198,7 @@ const Home: FunctionComponent = () => {
                   0,
               };
             })}
+            center={regions.find((region)=>formValues.region==region.Region)}
           />
         </Box>
       </Box>

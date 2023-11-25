@@ -127,8 +127,8 @@ const MyForm: FunctionComponent<FormProps> = ({
           render={({ field }) => (
             <Select {...field} className={classes.regionSelect}>
               {regions?.map((region, index) => (
-                <MenuItem key={index} value={region}>
-                  {region}
+                <MenuItem key={index} value={region.Region}>
+                  {region.Region}
                 </MenuItem>
               ))}
             </Select>
