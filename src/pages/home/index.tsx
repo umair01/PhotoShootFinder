@@ -1,5 +1,17 @@
-import { FunctionComponent, useEffect, useRef, useState } from "react";
-import { Box, Button, useMediaQuery, Theme, Typography } from "@mui/material";
+import {
+  Fragment,
+  FunctionComponent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import {
+  Box,
+  Button,
+  useMediaQuery,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import { useLoadScript } from "@react-google-maps/api";
@@ -37,6 +49,7 @@ const Home: FunctionComponent = () => {
   const [sessions, setSessions] = useState<string[]>([]);
   const [loadData, setLoadData] = useState(false);
   const [lazyLoadingData, setLazyLoadingData] = useState(false);
+  const [markerIndex, setMarkerIndex] = useState<number | null>(null);
 
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -51,6 +64,7 @@ const Home: FunctionComponent = () => {
   };
 
   const getPhotographerData = async (query?: string) => {
+    setMarkerIndex(null);
     try {
       setLoading(true);
       const res = await getPhotographerSessions(query);
@@ -99,7 +113,6 @@ const Home: FunctionComponent = () => {
       if (loadData) {
         await onSubmit(formValues, true);
         if (cardRef.current) {
-          console.log("bottom");
           cardRef?.current?.scrollIntoView({
             behavior: "smooth",
           });
@@ -117,12 +130,23 @@ const Home: FunctionComponent = () => {
     setSessions(sessions);
   };
 
+  const handleMarkerIndex = (index: number | null) => {
+    if (index === markerIndex) {
+      setMarkerIndex(null);
+    } else {
+      if (responsiveView && !userSelectedView.maps) {
+        setResponsiveView();
+      }
+      setMarkerIndex(index);
+    }
+  };
+
   useEffect(() => {
     getBasicData();
     getPhotographerData(`page=${page}`);
   }, []);
 
-  if (!isLoaded && loading) return <Loader />;
+  if (!isLoaded) return <Loader />;
 
   return (
     <Box
@@ -151,26 +175,41 @@ const Home: FunctionComponent = () => {
           onScroll={handleScroll}
           ref={cardRef}
         >
-          {photographerSessions?.length ? (
-            <>
-              <Cards
-                region={formValues.region}
-                results={photographerSessions?.length || 0}
-                photoGrapherSession={photographerSessions}
-              />
-              {lazyLoadingData && <div>Loading....</div>}
-            </>
-          ) : (
+          {loading ? (
             <Box
               display="flex"
-              flexDirection="column"
+              width="100%"
               height="100%"
               justifyContent="center"
               alignItems="center"
             >
-              <Typography variant="h6">Address Not Found.</Typography>
-              <Typography>Please try a different location.</Typography>
+              <CircularProgress />
             </Box>
+          ) : (
+            <Fragment>
+              {photographerSessions?.length ? (
+                <>
+                  <Cards
+                    onClick={handleMarkerIndex}
+                    region={formValues.region}
+                    results={photographerSessions?.length || 0}
+                    photoGrapherSession={photographerSessions}
+                  />
+                  {lazyLoadingData && <div>Loading....</div>}
+                </>
+              ) : (
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  height="100%"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  <Typography variant="h6">Address Not Found.</Typography>
+                  <Typography>Please try a different location.</Typography>
+                </Box>
+              )}
+            </Fragment>
           )}
         </Box>
         <Box
@@ -178,12 +217,12 @@ const Home: FunctionComponent = () => {
             width: responsiveView ? "100%" : "40%",
             display: setView(userSelectedView.maps) ? "block" : "none",
             height: "100%",
-            background: (theme: Theme) => theme.palette.secondary.main,
           }}
         >
           <Maps
+            markerIndex={markerIndex}
+            onClick={handleMarkerIndex}
             markerPositions={photographerSessions.map((photographerSession) => {
-            
               return {
                 sessionName: photographerSession?.SessionName,
                 address:
@@ -198,7 +237,9 @@ const Home: FunctionComponent = () => {
                   0,
               };
             })}
-            center={regions.find((region)=>formValues.region==region.Region)}
+            center={regions.find(
+              (region) => formValues.region == region.Region
+            )}
           />
         </Box>
       </Box>

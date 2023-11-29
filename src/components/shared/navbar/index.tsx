@@ -25,7 +25,6 @@ const Navbar: FunctionComponent = () => {
   const [activePage, setActivePage] = useState<string>(location.pathname);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    console.log("dasa");
     setAnchorElNav(event.currentTarget);
   };
 

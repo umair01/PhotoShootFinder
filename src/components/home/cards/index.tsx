@@ -1,8 +1,9 @@
 import { FunctionComponent } from "react";
 import { Box, Typography, List, ListItem, Link, Theme } from "@mui/material";
+import PublicIcon from "@mui/icons-material/Public";
 import { makeStyles } from "@mui/styles";
 import InstagramIcon from "../../../assets/instagram.svg";
-import FacebookIcon from "@mui/icons-material/Facebook";
+import FacebookIcon from "../../../assets/facebook.svg";
 import SwipeableTextMobileStepper from "../imageCarousel";
 
 import {
@@ -41,6 +42,7 @@ const Cards: FunctionComponent<CardsProps> = ({
   region,
   results,
   photoGrapherSession,
+  onClick = () => {},
 }) => {
   const classes = useStyles();
 
@@ -56,12 +58,50 @@ const Cards: FunctionComponent<CardsProps> = ({
         {photoGrapherSession.map(
           (session: PhotographerSessionDetails, index: number) => {
             return (
-              <ListItem className={classes.cardsContainer} key={index}>
+              <ListItem
+                className={classes.cardsContainer}
+                key={index}
+                sx={{ cursor: "pointer" }}
+                onClick={() => {
+                  onClick(index);
+                }}
+              >
                 <SwipeableTextMobileStepper />
                 <Box className={classes.card}>
+                  <Box className={classes.socialContainer}>
+                    {session.Instragram && (
+                      <Link
+                        target="_blank"
+                        rel="noreferrer"
+                        href={session.Instragram}
+                      >
+                        <img width={24} height={24} src={InstagramIcon} />
+                      </Link>
+                    )}
+                    {session.Facebook && (
+                      <Link
+                        target="_blank"
+                        rel="noreferrer"
+                        href={session.Facebook}
+                      >
+                        <img width={24} height={24} src={FacebookIcon} />
+                      </Link>
+                    )}
+                    {session.Website && (
+                      <Link
+                        target="_blank"
+                        rel="noreferrer"
+                        href={session.Website}
+                      >
+                        <PublicIcon />
+                      </Link>
+                    )}
+                  </Box>
                   <Typography variant="h6">{session.SessionName}</Typography>
                   <Typography variant="caption">{session.Address}</Typography>
-                  <Typography variant="body1">{dayjs(session.SessionDate).format("LLL")}</Typography>
+                  <Typography variant="body1">
+                    {dayjs(session.SessionDate).format("LLL")}
+                  </Typography>
                   <Box className={classes.additionalInfoContainer}>
                     <LabelValue
                       label="Photographer"
@@ -86,36 +126,6 @@ const Cards: FunctionComponent<CardsProps> = ({
                       label="Phone"
                       value={session.PhotographerPhone as string | null}
                     />
-
-                    <Box className={classes.socialContainer}>
-                      {session.Instragram && (
-                        <Link
-                          target="_blank"
-                          rel="noreferrer"
-                          href={session.Instragram}
-                        >
-                          <img width={24} height={24} src={InstagramIcon} />
-                        </Link>
-                      )}
-                      {session.Facebook && (
-                        <Link
-                          target="_blank"
-                          rel="noreferrer"
-                          href={session.Facebook}
-                        >
-                          <FacebookIcon sx={{ color: "#0766ff" }} />
-                        </Link>
-                      )}
-                      {session.Website && (
-                        <Link
-                          target="_blank"
-                          rel="noreferrer"
-                          href={session.Website}
-                        >
-                          <Typography fontSize={14}>Website</Typography>
-                        </Link>
-                      )}
-                    </Box>
                   </Box>
                 </Box>
               </ListItem>

@@ -1,36 +1,32 @@
-import { FunctionComponent, Fragment, useState } from "react";
+import { FunctionComponent, Fragment, useState, useEffect } from "react";
 import { Box, Typography } from "@mui/material";
-import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
+import { GoogleMap, MarkerF, InfoWindow } from "@react-google-maps/api";
 import { MapsProps } from "../../../utils/models";
 
-const Maps: FunctionComponent<MapsProps> = ({ markerPositions, center }) => {
-  const [activeMarker, setActiveMarker] = useState<number | null>(null);
-
-  const handleActiveMarker = (marker: number | null) => {
-    if (marker === activeMarker) {
-      return;
-    }
-    setActiveMarker(marker);
-  };
-
+const Maps: FunctionComponent<MapsProps> = ({
+  markerPositions,
+  center,
+  markerIndex,
+  onClick = () => {},
+}) => {
   return (
     <Fragment>
       <GoogleMap
         mapContainerClassName="map-container"
         center={{ lat: center?.Latitude || 0, lng: center?.Longitude || 0 }}
         zoom={10}
-        onClick={() => setActiveMarker(null)}
+        onClick={() => onClick(null)}
       >
         {markerPositions.map((position, index) => {
           return (
-            <Marker
+            <MarkerF
               key={index}
               position={{ lat: position.lat, lng: position.lng }}
               icon={"http://maps.google.com/mapfiles/ms/icons/green-dot.png"}
-              onClick={() => handleActiveMarker(index)}
+              onClick={() => onClick(index)}
             >
-              {activeMarker === index ? (
-                <InfoWindow onCloseClick={() => setActiveMarker(null)}>
+              {markerIndex === index && (
+                <InfoWindow onCloseClick={() => onClick(null)}>
                   <Box
                     display="flex"
                     flexDirection="column"
@@ -45,8 +41,8 @@ const Maps: FunctionComponent<MapsProps> = ({ markerPositions, center }) => {
                     </Typography>
                   </Box>
                 </InfoWindow>
-              ) : null}
-            </Marker>
+              )}
+            </MarkerF>
           );
         })}
       </GoogleMap>

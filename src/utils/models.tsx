@@ -50,6 +50,7 @@ export interface PhotographerSessionDetails extends SessionDetails {
 }
 
 export interface CardsProps {
+  onClick?: (markerIndex: number | null) => void;
   region: string;
   results: number;
   photoGrapherSession: PhotographerSessionDetails[];
@@ -61,7 +62,7 @@ export interface LabelValueProps {
   direction?: "row" | "column";
 }
 
-interface IMarkerPosition {
+export interface IMarkerPosition {
   sessionName: string | null;
   address: string | null;
   img: string;
@@ -73,8 +74,16 @@ interface Center {
   Latitude: number;
 }
 export interface MapsProps {
+  onClick?: (markerIndex: number | null) => void;
+  markerIndex?: number | null;
   markerPositions: IMarkerPosition[];
   center: Center | undefined;
+}
+
+export interface IActiveMarker {
+  sessionName: string | null;
+  address: string | null;
+  img: string;
 }
 
 export interface Region {

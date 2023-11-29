@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useTheme } from "@mui/material/styles";
+import { useTheme, Theme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MobileStepper from "@mui/material/MobileStepper";
 import Button from "@mui/material/Button";
@@ -87,6 +87,7 @@ function SwipeableTextMobileStepper() {
         steps={maxSteps}
         position="static"
         activeStep={activeStep}
+        sx={{ bgcolor: (theme: Theme) => theme.palette.background.paper }}
         nextButton={
           <Button
             size="small"

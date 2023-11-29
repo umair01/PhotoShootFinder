@@ -17,6 +17,7 @@ const App: FunctionComponent = () => {
             height: "100%",
             width: "100%",
             overflow: "hidden",
+            bgcolor: (theme) => theme.palette.background.default,
           }}
         >
           <Routes>
