@@ -18,7 +18,7 @@ const Maps: FunctionComponent<MapsProps> = ({ markerPositions, center }) => {
       <GoogleMap
         mapContainerClassName="map-container"
         center={{ lat: center?.Latitude || 0, lng: center?.Longitude || 0 }}
-        zoom={5}
+        zoom={10}
         onClick={() => setActiveMarker(null)}
       >
         {markerPositions.map((position, index) => {
