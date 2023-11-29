@@ -10,6 +10,7 @@ import {
   PhotographerSessionDetails,
   LabelValueProps,
 } from "../../../utils/models";
+import dayjs from "dayjs";
 
 const LabelValue: FunctionComponent<LabelValueProps> = ({
   label = null,
@@ -60,7 +61,7 @@ const Cards: FunctionComponent<CardsProps> = ({
                 <Box className={classes.card}>
                   <Typography variant="h6">{session.SessionName}</Typography>
                   <Typography variant="caption">{session.Address}</Typography>
-                  <Typography variant="body1">{session.SessionDate}</Typography>
+                  <Typography variant="body1">{dayjs(session.SessionDate).format("LLL")}</Typography>
                   <Box className={classes.additionalInfoContainer}>
                     <LabelValue
                       label="Photographer"
