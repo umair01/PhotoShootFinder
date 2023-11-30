@@ -1,10 +1,4 @@
-import {
-  FunctionComponent,
-  Fragment,
-  useEffect,
-  useState,
-  useRef,
-} from "react";
+import { FunctionComponent, Fragment, useEffect } from "react";
 import { useForm, Controller, useWatch } from "react-hook-form";
 import {
   Button,
@@ -26,8 +20,6 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 import { SessionFormProps, FormProps, Fields } from "../../../utils/models";
-import { getRegions, getSessions } from "../../../api/basicData";
-import { Loader } from "../..";
 
 const useStyles = makeStyles((theme: Theme) => ({
   formContainer: {
@@ -83,23 +75,13 @@ const MyForm: FunctionComponent<FormProps> = ({
   getValues,
   watch,
   regions,
-  sessions
+  sessions,
 }) => {
   const classes = useStyles();
   const responsiveInputs = useMediaQuery("(max-width:700px)");
- 
-  const initialRender = useRef(0);
 
   useEffect(() => {
-    if (initialRender.current === 0) {
-      initialRender.current++;
-      return;
-    } else if (initialRender.current === 1) {
-      initialRender.current++;
-      return;
-    } else {
-      onSubmit(getValues());
-    }
+    onSubmit(getValues());
   }, [watch]);
 
   const handle30Days = () => {
@@ -115,8 +97,6 @@ const MyForm: FunctionComponent<FormProps> = ({
     setValue("fromDate", currentDate);
     setValue("toDate", nextDate);
   };
-
-
 
   return (
     <Box rowGap={2} className={classes.formContainer}>
@@ -229,7 +209,7 @@ const SessionFilterForm: FunctionComponent<SessionFormProps> = ({
   onSubmit,
   defaultValues = {},
   regions,
-  sessions
+  sessions,
 }) => {
   const classes = useStyles();
   const isMobile = useMediaQuery("(max-width:780px)");
