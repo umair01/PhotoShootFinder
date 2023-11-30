@@ -100,7 +100,7 @@ const Cards: FunctionComponent<CardsProps> = ({
                   <Typography variant="h6">{session.SessionName}</Typography>
                   <Typography variant="caption">{session.Address}</Typography>
                   <Typography variant="body1">
-                    {dayjs(session.SessionDate).format("LLL")}
+                    {dayjs(session.SessionDate).format("MM/DD")}
                   </Typography>
                   <Box className={classes.additionalInfoContainer}>
                     <LabelValue

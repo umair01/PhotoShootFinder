@@ -31,9 +31,9 @@ const Home: FunctionComponent = () => {
   });
   const [formValues, setFormValues] = useState<Fields>({
     sessionType: "",
-    region: "",
+    region: "SF Bay Area",
     fromDate: dayjs(),
-    toDate: dayjs().add(90, "day"),
+    toDate: dayjs().add(30, "day"),
   });
   const [userSelectedView, setUserSelectedView] = useState({
     list: true,
