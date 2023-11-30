@@ -87,7 +87,7 @@ export interface IActiveMarker {
 }
 
 export interface Region {
-  Region: string;
   Longitude: number;
   Latitude: number;
+  Region?: string;
 }

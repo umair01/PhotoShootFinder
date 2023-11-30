@@ -50,7 +50,7 @@ const Home: FunctionComponent = () => {
   const [loadData, setLoadData] = useState(false);
   const [lazyLoadingData, setLazyLoadingData] = useState(false);
   const [markerIndex, setMarkerIndex] = useState<number | null>(null);
-
+  const [center, setCenter] = useState<Region | null>();
   const cardRef = useRef<HTMLDivElement>(null);
 
   const onSubmit = async (data: Fields, lazyLoad = false) => {
@@ -131,6 +131,7 @@ const Home: FunctionComponent = () => {
   };
 
   const handleMarkerIndex = (index: number | null) => {
+    console.log("isnsss", index);
     if (index === markerIndex) {
       setMarkerIndex(null);
     } else {
@@ -138,6 +139,15 @@ const Home: FunctionComponent = () => {
         setResponsiveView();
       }
       setMarkerIndex(index);
+      if (index != null) {
+        console.log("idexxx", index, photographerSessions[index]);
+        setCenter({
+          Longitude: Number(
+            photographerSessions[index].LocationLongitude || "0"
+          ),
+          Latitude: Number(photographerSessions[index].LocationLatitude || "0"),
+        });
+      }
     }
   };
 
@@ -237,9 +247,10 @@ const Home: FunctionComponent = () => {
                   0,
               };
             })}
-            center={regions.find(
-              (region) => formValues.region == region.Region
-            )}
+            center={
+              center ||
+              regions.find((region) => formValues.region == region.Region)
+            }
           />
         </Box>
       </Box>
