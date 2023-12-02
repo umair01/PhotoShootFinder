@@ -22,6 +22,7 @@ export interface FormProps extends Omit<SessionFormProps, "defaultValues"> {
   setValue: any;
   getValues: any;
   watch: any;
+  reset: any;
 }
 
 export interface SessionDetails {

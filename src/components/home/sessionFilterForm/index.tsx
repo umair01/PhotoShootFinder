@@ -12,6 +12,7 @@ import {
   AccordionDetails,
   useMediaQuery,
   Typography,
+  CircularProgress,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { ExpandMore } from "@mui/icons-material";
@@ -62,6 +63,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: "14px !important",
     padding: "6px !important",
     color: theme.palette.common.white + "!important",
+    fontWeight: "bold",
   },
   fontColor: {
     color: theme.palette.text.secondary,
@@ -76,6 +78,7 @@ const MyForm: FunctionComponent<FormProps> = ({
   watch,
   regions,
   sessions,
+  reset,
 }) => {
   const classes = useStyles();
   const responsiveInputs = useMediaQuery("(max-width:700px)");
@@ -147,7 +150,6 @@ const MyForm: FunctionComponent<FormProps> = ({
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   {...field}
-                  disablePast
                   sx={{
                     ".MuiOutlinedInput-root": {
                       borderRadius: 0,
@@ -169,7 +171,6 @@ const MyForm: FunctionComponent<FormProps> = ({
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   {...field}
-                  disablePast
                   sx={{
                     ".MuiOutlinedInput-root": {
                       borderRadius: 0,
@@ -200,6 +201,14 @@ const MyForm: FunctionComponent<FormProps> = ({
         >
           Next 90 Days
         </Button>
+        <Button
+          className={classes.button}
+          variant="contained"
+          color="primary"
+          onClick={() => reset()}
+        >
+          Reset
+        </Button>
       </Box>
     </Box>
   );
@@ -213,11 +222,17 @@ const SessionFilterForm: FunctionComponent<SessionFormProps> = ({
 }) => {
   const classes = useStyles();
   const isMobile = useMediaQuery("(max-width:780px)");
-  const { control, setValue, getValues } = useForm<Fields>({
+  const { control, setValue, getValues, reset } = useForm<Fields>({
     defaultValues: { ...defaultValues },
   });
   const watch = useWatch({ control });
 
+  if (sessions.length === 0)
+    return (
+      <Box minHeight={90} className={classes.formContainer}>
+        <CircularProgress />
+      </Box>
+    );
   return (
     <Fragment>
       {isMobile ? (
@@ -237,6 +252,7 @@ const SessionFilterForm: FunctionComponent<SessionFormProps> = ({
               watch={watch}
               regions={regions}
               sessions={sessions}
+              reset={reset}
             />
           </AccordionDetails>
         </Accordion>
@@ -249,6 +265,7 @@ const SessionFilterForm: FunctionComponent<SessionFormProps> = ({
           watch={watch}
           regions={regions}
           sessions={sessions}
+          reset={reset}
         />
       )}
     </Fragment>

@@ -68,6 +68,15 @@ const Cards: FunctionComponent<CardsProps> = ({
               >
                 <SwipeableTextMobileStepper />
                 <Box className={classes.card}>
+                  {dayjs().isAfter(session.SessionDate) && (
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="#FF0000"
+                    >
+                      Past Event
+                    </Typography>
+                  )}
                   <Box className={classes.socialContainer}>
                     {session.Instragram && (
                       <Link

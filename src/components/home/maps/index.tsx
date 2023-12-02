@@ -30,12 +30,14 @@ const Maps: FunctionComponent<MapsProps> = ({
                   <Box
                     display="flex"
                     flexDirection="column"
-                    width="200px"
-                    height="225px"
+                    width="250px"
+                    height="215px"
                     rowGap={0.5}
                   >
-                    <img height="150px" width="200px" src={position.img} />
-                    <Typography variant="h6">{position.sessionName}</Typography>
+                    <img height="150px" width="100%" src={position.img} />
+                    <Typography variant="h6" fontSize="18px">
+                      {position.sessionName}
+                    </Typography>
                     <Typography variant="caption">
                       {position.address}
                     </Typography>

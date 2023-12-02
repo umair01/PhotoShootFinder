@@ -153,7 +153,6 @@ const Home: FunctionComponent = () => {
 
   useEffect(() => {
     getBasicData();
-    getPhotographerData(`page=${page}`);
   }, []);
 
   if (!isLoaded) return <Loader />;

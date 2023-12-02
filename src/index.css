@@ -29,3 +29,11 @@ body,
   height: 100%;
   width: 100%;
 }
+
+.gm-style .gm-style-iw-d {
+  padding: 18px 0 8px 18px;
+}
+
+.gm-style .gm-style-iw {
+  padding: 0;
+}
