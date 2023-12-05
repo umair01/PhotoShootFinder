@@ -3,7 +3,7 @@ import { createTheme } from "@mui/material/styles";
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#00B2EB", // Primary color in hex
+      main: "#000080", // Primary color in hex
     },
     secondary: {
       main: "#FF6D3A", // Secondary color in hex
@@ -26,7 +26,7 @@ const theme = createTheme({
     },
     text: {
       primary: "#212121", // Primary text color in hex
-      secondary: "#00B2EB", // Secondary text color in hex
+      secondary: "#000080", // Secondary text color in hex
     },
     common: {
       black: "#000000",

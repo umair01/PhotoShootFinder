@@ -25,11 +25,20 @@ const ComingSoonPage: FunctionComponent = () => {
 
   return (
     <Container maxWidth="md" className={classes.comingSoonContainer}>
-      <Typography variant="h2" className={classes.heading}>
+      {/* <Typography variant="h2" className={classes.heading}>
         Coming Soon
-      </Typography>
-      <Typography variant="body1" className={classes.description}>
-        We're working on something awesome. Stay tuned for updates!
+      </Typography> */}
+      <Typography variant="body1" className={classes.heading}>
+        Welcome to Photo Shoot Finder. A centralized place for finding
+        photographers holding photo shoots by location and dates. You’ll find
+        the photographer’s website, Instagram, & Facebook.
+        <br />
+        <br />
+        Contact me, Umair, at{" "}
+        <a href="mailto:khan5426@outlook.com"> khan5426@outlook.com</a>
+        <br />
+        <br />
+        To add or remove a listing use the above eMail address.
       </Typography>
     </Container>
   );
