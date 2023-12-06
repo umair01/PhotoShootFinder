@@ -66,7 +66,7 @@ const Cards: FunctionComponent<CardsProps> = ({
                 onClick(index);
               }}
             >
-              <SwipeableTextMobileStepper />
+              <SwipeableTextMobileStepper images={session.sessionImages}/>
               <Box className={classes.card}>
                 {/* {dayjs().isAfter(session.sessionDates.SessionDate) && (
                   <Typography variant="body1" fontWeight="bold" color="#FF0000">

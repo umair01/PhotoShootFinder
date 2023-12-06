@@ -38,6 +38,8 @@ export interface SessionDetails {
   // sessionDates: {SessionDate: string | null};
   sessionDates: SessionDate[];
   sessionType: { SessionType: string | null };
+  sessionImages?: { ImageUrl: string | null };
+
 }
 interface SessionDate{
   SessionDate:string
