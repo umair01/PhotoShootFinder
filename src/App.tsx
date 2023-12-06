@@ -5,7 +5,7 @@ import { ThemeProvider } from "@mui/material/styles";
 
 import theme from "./utils/muiTheme";
 import { Navbar } from "./components";
-import { Home, NotFound, ComingSoon } from "./pages";
+import { Home, NotFound, AboutUs } from "./pages";
 
 const App: FunctionComponent = () => {
   return (
@@ -22,7 +22,7 @@ const App: FunctionComponent = () => {
         >
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/about-us" element={<ComingSoon />} />
+            <Route path="/about-us" element={<AboutUs />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Paper>
@@ -36,9 +36,13 @@ const App: FunctionComponent = () => {
             background: theme.palette.primary.main,
           })}
         >
-          <Typography sx={(theme: Theme) => ({
-            color: theme.palette.common.white,
-          })}>All rights reserved.</Typography>
+          <Typography
+            sx={(theme: Theme) => ({
+              color: theme.palette.common.white,
+            })}
+          >
+            All rights reserved.
+          </Typography>
         </Box>
       </Box>
     </ThemeProvider>
