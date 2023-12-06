@@ -205,7 +205,7 @@ const MyForm: FunctionComponent<FormProps> = ({
           className={classes.button}
           variant="contained"
           color="primary"
-          onClick={() => reset()}
+          onClick={() => reset({ region: "" })}
         >
           Reset
         </Button>
