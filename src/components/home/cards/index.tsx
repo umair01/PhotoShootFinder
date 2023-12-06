@@ -74,8 +74,8 @@ const Cards: FunctionComponent<CardsProps> = ({
                   </Typography>
                 )} */}
                 {dayjs().isAfter(
-                  session.sessionDates !== null
-                    ? session?.sessionDates[0].SessionDate
+                  session?.sessionDates !== null
+                    ? session?.sessionDates[0]?.SessionDate
                     : ""
                 ) && (
                   <Typography variant="body1" fontWeight="bold" color="#FF0000">
@@ -193,7 +193,7 @@ const Cards: FunctionComponent<CardsProps> = ({
                   />
                   <LabelValue
                     label="Session Types"
-                    value={session.sessionType.SessionType as string | null}
+                    value={session.sessionType?.SessionType as string | null}
                   />
                 </Box>
               </Box>

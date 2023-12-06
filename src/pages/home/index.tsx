@@ -240,12 +240,12 @@ const Home: FunctionComponent = () => {
                   photographerSession?.sessionDates?.length > 0
                     ? photographerSession?.sessionDates?.map(
                         (date) => {
-                          return dayjs(date.SessionDate).format("MM/DD");
+                          return dayjs(date?.SessionDate).format("MM/DD");
                         }
                       ).join(", ")
                     : "",
                 // sessionDate: dayjs(photographerSession?.sessionDates.SessionDate).format("MM/DD"),
-                sessionType: photographerSession.sessionType.SessionType,
+                sessionType: photographerSession.sessionType?.SessionType,
                 lat:
                   parseFloat(photographerSession?.LocationLatitude || "0") || 0,
                 lng:
