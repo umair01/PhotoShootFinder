@@ -35,12 +35,14 @@ export interface SessionDetails {
   SessionName: string | null;
   SessionRowID: number | null;
   photographer: Photographer;
-  sessionDates: {SessionDate: string | null};
-  // sessionDates: {SessionDate: string[] | null};
-  sessionType: {SessionType: string | null}
+  // sessionDates: {SessionDate: string | null};
+  sessionDates: SessionDate[];
+  sessionType: { SessionType: string | null };
 }
-
-export interface Photographer  {
+interface SessionDate{
+  SessionDate:string
+}
+export interface Photographer {
   CompanyNotes: string | null;
   Facebook: string | null;
   Instagram: string | null;
@@ -51,7 +53,7 @@ export interface Photographer  {
   PhotographerPhone: string | null;
   PreferredContactMethod: string | null;
   Website: string | null;
-};
+}
 
 export interface CardsProps {
   onClick?: (markerIndex: number | null) => void;

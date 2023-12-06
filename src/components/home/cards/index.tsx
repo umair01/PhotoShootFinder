@@ -68,20 +68,20 @@ const Cards: FunctionComponent<CardsProps> = ({
             >
               <SwipeableTextMobileStepper />
               <Box className={classes.card}>
-                {dayjs().isAfter(session.sessionDates.SessionDate) && (
+                {/* {dayjs().isAfter(session.sessionDates.SessionDate) && (
                   <Typography variant="body1" fontWeight="bold" color="#FF0000">
                     Past Event
                   </Typography>
-                )}
-                {/* {dayjs().isAfter(
-                  session.sessionDates.SessionDate !== null
-                    ? session?.sessionDates?.SessionDate[0]
+                )} */}
+                {dayjs().isAfter(
+                  session.sessionDates !== null
+                    ? session?.sessionDates[0].SessionDate
                     : ""
                 ) && (
                   <Typography variant="body1" fontWeight="bold" color="#FF0000">
                     Past Event
                   </Typography>
-                )} */}
+                )}
                 <Box className={classes.socialContainer}>
                   {session.photographer.Instagram && (
                     <Link
@@ -116,24 +116,24 @@ const Cards: FunctionComponent<CardsProps> = ({
                 </Box>
                 <Typography variant="h6">{session.SessionName}</Typography>
                 <Typography variant="caption">{session.Address}</Typography>
-                <LabelValue
+                {/* <LabelValue
                   label="Event Dates"
                   value={dayjs(session?.sessionDates.SessionDate).format(
                     "MM/DD"
                   )}
-                />
+                /> */}
 
-                {/* <LabelValue
+                <LabelValue
                   label="Event Dates"
                   value={
-                    session?.sessionDates.SessionDate !== null &&
-                    session?.sessionDates.SessionDate?.length > 0
-                      ? session?.sessionDates.SessionDate?.map((date) => {
-                          return dayjs(date).format("MM/DD");
+                    session?.sessionDates !== null &&
+                    session?.sessionDates?.length > 0
+                      ? session?.sessionDates.map((date) => {
+                          return dayjs(date.SessionDate).format("MM/DD");
                         }).join(", ")
                       : ""
                   }
-                /> */}
+                />
 
                 <Box className={classes.additionalInfoContainer}>
                   <LabelValue
