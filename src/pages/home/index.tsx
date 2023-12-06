@@ -235,16 +235,16 @@ const Home: FunctionComponent = () => {
                 sessionName: photographerSession?.SessionName,
                 companyName:
                   photographerSession?.photographer.PhotographerCompanyName,
-                // sessionDate:
-                //   photographerSession?.sessionDates?.SessionDate !== null &&
-                //   photographerSession?.sessionDates?.SessionDate?.length > 0
-                //     ? photographerSession?.sessionDates.SessionDate?.map(
-                //         (date: string) => {
-                //           return dayjs(date).format("MM/DD");
-                //         }
-                //       ).join(", ")
-                //     : "",
-                sessionDate: dayjs(photographerSession?.sessionDates.SessionDate).format("MM/DD"),
+                sessionDate:
+                  photographerSession?.sessionDates !== null &&
+                  photographerSession?.sessionDates?.length > 0
+                    ? photographerSession?.sessionDates?.map(
+                        (date) => {
+                          return dayjs(date.SessionDate).format("MM/DD");
+                        }
+                      ).join(", ")
+                    : "",
+                // sessionDate: dayjs(photographerSession?.sessionDates.SessionDate).format("MM/DD"),
                 sessionType: photographerSession.sessionType.SessionType,
                 lat:
                   parseFloat(photographerSession?.LocationLatitude || "0") || 0,
