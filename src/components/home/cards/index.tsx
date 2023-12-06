@@ -180,7 +180,16 @@ const Cards: FunctionComponent<CardsProps> = ({
                   />
                   <LabelValue
                     label="How to Book"
-                    value={session.HowToBook as string | null}
+                    value={
+                      <Link
+                        target="_blank"
+                        rel="noreferrer"
+                        href={session.HowToBook||''}
+                        onClick={(e: any) => e.stopPropagation()}
+                      >
+                        {session.HowToBook}
+                      </Link>
+                    }
                   />
                   <LabelValue
                     label="Session Types"
