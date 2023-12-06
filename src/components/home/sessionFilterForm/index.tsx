@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   inputs: { borderRadius: 0 },
   select: {
-    minWidth: "170px !important",
+    width: "170px !important",
   },
   regionSelect: {
     borderRadius: 0,

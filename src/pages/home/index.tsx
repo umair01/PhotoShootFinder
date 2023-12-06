@@ -17,7 +17,7 @@ import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import { useLoadScript } from "@react-google-maps/api";
 import dayjs from "dayjs";
 
-import { Fields, PhotographerSessionDetails, Region } from "../../utils/models";
+import { Fields, SessionDetails, Region } from "../../utils/models";
 import { SessionForm, Cards, Maps, Loader } from "../../components";
 import { getPhotographerSessions } from "../../api/home";
 import { buildQueryString } from "../../utils";
@@ -43,7 +43,7 @@ const Home: FunctionComponent = () => {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [photographerSessions, setPhotographerSessions] = useState<
-    PhotographerSessionDetails[]
+    SessionDetails[]
   >([]);
   const [regions, setRegions] = useState<Region[]>([]);
   const [sessions, setSessions] = useState<string[]>([]);
@@ -131,7 +131,6 @@ const Home: FunctionComponent = () => {
   };
 
   const handleMarkerIndex = (index: number | null) => {
-    console.log("isnsss", index);
     if (index === markerIndex) {
       setMarkerIndex(null);
     } else {
@@ -140,7 +139,6 @@ const Home: FunctionComponent = () => {
       }
       setMarkerIndex(index);
       if (index != null) {
-        console.log("idexxx", index, photographerSessions[index]);
         setCenter({
           Longitude: Number(
             photographerSessions[index].LocationLongitude || "0"
@@ -179,6 +177,7 @@ const Home: FunctionComponent = () => {
             display: setView(userSelectedView.list) ? "block" : "none",
             padding: "10px",
             height: "100%",
+            overflow: "hidden",
             overflowY: "auto",
           }}
           onScroll={handleScroll}
@@ -234,11 +233,19 @@ const Home: FunctionComponent = () => {
             markerPositions={photographerSessions.map((photographerSession) => {
               return {
                 sessionName: photographerSession?.SessionName,
-                address:
-                  photographerSession?.Address ||
-                  photographerSession.Location ||
-                  "",
-                img: "https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60",
+                companyName:
+                  photographerSession?.photographer.PhotographerCompanyName,
+                // sessionDate:
+                //   photographerSession?.sessionDates?.SessionDate !== null &&
+                //   photographerSession?.sessionDates?.SessionDate?.length > 0
+                //     ? photographerSession?.sessionDates.SessionDate?.map(
+                //         (date: string) => {
+                //           return dayjs(date).format("MM/DD");
+                //         }
+                //       ).join(", ")
+                //     : "",
+                sessionDate: dayjs(photographerSession?.sessionDates.SessionDate).format("MM/DD"),
+                sessionType: photographerSession.sessionType.SessionType,
                 lat:
                   parseFloat(photographerSession?.LocationLatitude || "0") || 0,
                 lng:

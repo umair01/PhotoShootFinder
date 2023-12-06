@@ -8,7 +8,7 @@ import SwipeableTextMobileStepper from "../imageCarousel";
 
 import {
   CardsProps,
-  PhotographerSessionDetails,
+  SessionDetails,
   LabelValueProps,
 } from "../../../utils/models";
 import dayjs from "dayjs";
@@ -31,6 +31,7 @@ const LabelValue: FunctionComponent<LabelValueProps> = ({
           {label}:
         </Typography>
       </Box>
+
       <Typography className={classes.value} variant="caption">
         {value ? value : "-"}
       </Typography>
@@ -55,92 +56,141 @@ const Cards: FunctionComponent<CardsProps> = ({
         </Typography>
       </Box>
       <List className={classes.listContainer} id="listt">
-        {photoGrapherSession.map(
-          (session: PhotographerSessionDetails, index: number) => {
-            return (
-              <ListItem
-                className={classes.cardsContainer}
-                key={index}
-                sx={{ cursor: "pointer" }}
-                onClick={() => {
-                  onClick(index);
-                }}
-              >
-                <SwipeableTextMobileStepper />
-                <Box className={classes.card}>
-                  {dayjs().isAfter(session.SessionDate) && (
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="#FF0000"
-                    >
-                      Past Event
-                    </Typography>
-                  )}
-                  <Box className={classes.socialContainer}>
-                    {session.Instragram && (
-                      <Link
-                        target="_blank"
-                        rel="noreferrer"
-                        href={session.Instragram}
-                      >
-                        <img width={24} height={24} src={InstagramIcon} />
-                      </Link>
-                    )}
-                    {session.Facebook && (
-                      <Link
-                        target="_blank"
-                        rel="noreferrer"
-                        href={session.Facebook}
-                      >
-                        <img width={24} height={24} src={FacebookIcon} />
-                      </Link>
-                    )}
-                    {session.Website && (
-                      <Link
-                        target="_blank"
-                        rel="noreferrer"
-                        href={session.Website}
-                      >
-                        <PublicIcon />
-                      </Link>
-                    )}
-                  </Box>
-                  <Typography variant="h6">{session.SessionName}</Typography>
-                  <Typography variant="caption">{session.Address}</Typography>
-                  <Typography variant="body1">
-                    {dayjs(session.SessionDate).format("MM/DD")}
+        {photoGrapherSession.map((session: SessionDetails, index: number) => {
+          return (
+            <ListItem
+              className={classes.cardsContainer}
+              key={index}
+              sx={{ cursor: "pointer" }}
+              onClick={() => {
+                onClick(index);
+              }}
+            >
+              <SwipeableTextMobileStepper />
+              <Box className={classes.card}>
+                {dayjs().isAfter(session.sessionDates.SessionDate) && (
+                  <Typography variant="body1" fontWeight="bold" color="#FF0000">
+                    Past Event
                   </Typography>
-                  <Box className={classes.additionalInfoContainer}>
-                    <LabelValue
-                      label="Photographer"
-                      value={
-                        (session.PhotographerFirstName
-                          ? session.PhotographerFirstName
-                          : "") +
-                        (session.PhotographerLastName
-                          ? " " + session.PhotographerLastName
-                          : "")
-                      }
-                    />
-                    <LabelValue
-                      label="Company"
-                      value={session.PhotographerCompanyName as string | null}
-                    />
-                    <LabelValue
-                      label="Email"
-                      value={session.PhotographerEmail as string | null}
-                    />
-                    <LabelValue
-                      label="Phone"
-                      value={session.PhotographerPhone as string | null}
-                    />
-                  </Box>
+                )}
+                {/* {dayjs().isAfter(
+                  session.sessionDates.SessionDate !== null
+                    ? session?.sessionDates?.SessionDate[0]
+                    : ""
+                ) && (
+                  <Typography variant="body1" fontWeight="bold" color="#FF0000">
+                    Past Event
+                  </Typography>
+                )} */}
+                <Box className={classes.socialContainer}>
+                  {session.photographer.Instagram && (
+                    <Link
+                      target="_blank"
+                      rel="noreferrer"
+                      href={session.photographer.Instagram}
+                      onClick={(e: any) => e.stopPropagation()}
+                    >
+                      <img width={24} height={24} src={InstagramIcon} />
+                    </Link>
+                  )}
+                  {session.photographer.Facebook && (
+                    <Link
+                      target="_blank"
+                      rel="noreferrer"
+                      href={session.photographer.Facebook}
+                      onClick={(e: any) => e.stopPropagation()}
+                    >
+                      <img width={24} height={24} src={FacebookIcon} />
+                    </Link>
+                  )}
+                  {session.photographer.Website && (
+                    <Link
+                      target="_blank"
+                      rel="noreferrer"
+                      href={session.photographer.Website}
+                      onClick={(e: any) => e.stopPropagation()}
+                    >
+                      <PublicIcon />
+                    </Link>
+                  )}
                 </Box>
-              </ListItem>
-            );
-          }
-        )}
+                <Typography variant="h6">{session.SessionName}</Typography>
+                <Typography variant="caption">{session.Address}</Typography>
+                <LabelValue
+                  label="Event Dates"
+                  value={dayjs(session?.sessionDates.SessionDate).format(
+                    "MM/DD"
+                  )}
+                />
+
+                {/* <LabelValue
+                  label="Event Dates"
+                  value={
+                    session?.sessionDates.SessionDate !== null &&
+                    session?.sessionDates.SessionDate?.length > 0
+                      ? session?.sessionDates.SessionDate?.map((date) => {
+                          return dayjs(date).format("MM/DD");
+                        }).join(", ")
+                      : ""
+                  }
+                /> */}
+
+                <Box className={classes.additionalInfoContainer}>
+                  <LabelValue
+                    label="Photographer"
+                    value={
+                      (session.photographer.PhotographerFirstName
+                        ? session.photographer.PhotographerFirstName
+                        : "") +
+                      (session.photographer.PhotographerLastName
+                        ? " " + session.photographer.PhotographerLastName
+                        : "")
+                    }
+                  />
+                  <LabelValue
+                    label="Company"
+                    value={
+                      session.photographer.PhotographerCompanyName as
+                        | string
+                        | null
+                    }
+                  />
+                  <LabelValue
+                    label="Email"
+                    value={
+                      <Link
+                        target="_blank"
+                        rel="noreferrer"
+                        href={`mailto:${session.photographer.PhotographerEmail}`}
+                        onClick={(e: any) => e.stopPropagation()}
+                      >
+                        {session.photographer.PhotographerEmail}
+                      </Link>
+                    }
+                  />
+                  <LabelValue
+                    label="Phone"
+                    value={
+                      session.photographer.PhotographerPhone as string | null
+                    }
+                  />
+                  <LabelValue
+                    label="Location"
+                    value={session.Location as string | null}
+                  />
+                  <LabelValue
+                    label="How to Book"
+                    value={session.HowToBook as string | null}
+                  />
+                  <LabelValue
+                    label="Session Types"
+                    value={session.sessionType.SessionType as string | null}
+                  />
+                </Box>
+              </Box>
+            </ListItem>
+          );
+        })}
       </List>
     </Box>
   );
@@ -152,6 +202,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   labelValueContainer: {
     display: "flex",
     width: "100%",
+    overflow: "hidden",
   },
   labelContainer: {
     display: "flex",
@@ -161,18 +212,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     minWidth: "fit-content",
   },
   label: {
-    fontSize: "12px !important",
+    fontSize: "16px !important",
     fontWeight: "bold",
     color: theme.palette.text.secondary,
     minWidth: "fit-content",
   },
   value: {
-    fontSize: "12px !important",
+    fontSize: "16px !important",
     wordWrap: "break-word",
   },
   mainContainer: {
     width: "100%",
-    height: "100%",
   },
   listContainer: {
     padding: "20px 0",
@@ -192,7 +242,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexDirection: "column",
     width: "100%",
 
-    height: "248px",
+    height: "298px",
     [theme.breakpoints.down("sm")]: {
       height: "100%",
     },

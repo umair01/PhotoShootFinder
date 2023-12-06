@@ -4,7 +4,6 @@ import dayjs from "dayjs";
 
 export interface Fields {
   region: string;
-  //   subRegion: string;
   sessionType: string;
   fromDate: dayjs.Dayjs | null;
   toDate: dayjs.Dayjs | null;
@@ -26,47 +25,52 @@ export interface FormProps extends Omit<SessionFormProps, "defaultValues"> {
 }
 
 export interface SessionDetails {
-  SessionName: string | null;
-  SessionDate: string | null;
-  SessionType: string | null;
   Address: string | null;
-  LocationLongitude: string | null;
+  HowToBook: string | null;
+  Location: string | null;
   LocationLatitude: string | null;
+  LocationLongitude: string | null;
+  PhotographersID: string | null;
   Region: string | null;
+  SessionName: string | null;
+  SessionRowID: number | null;
+  photographer: Photographer;
+  sessionDates: {SessionDate: string | null};
+  // sessionDates: {SessionDate: string[] | null};
+  sessionType: {SessionType: string | null}
 }
 
-export interface PhotographerSessionDetails extends SessionDetails {
-  PhotographersID: number;
-  PhotographerCompanyName?: string | null;
-  Instragram?: string | null;
-  Website?: string | null;
-  Facebook?: string | null;
-  PreferredContactMethod?: string | null;
-  CompanyNotes?: string | null;
-  PhotographerFirstName?: string | null;
-  PhotographerLastName?: string | null;
-  PhotographerPhone?: string | null;
-  PhotographerEmail?: string | null;
-  Location: string | null;
-}
+export interface Photographer  {
+  CompanyNotes: string | null;
+  Facebook: string | null;
+  Instagram: string | null;
+  PhotographerCompanyName: string | null;
+  PhotographerEmail: string | null;
+  PhotographerFirstName: string | null;
+  PhotographerLastName: string | null;
+  PhotographerPhone: string | null;
+  PreferredContactMethod: string | null;
+  Website: string | null;
+};
 
 export interface CardsProps {
   onClick?: (markerIndex: number | null) => void;
   region: string;
   results: number;
-  photoGrapherSession: PhotographerSessionDetails[];
+  photoGrapherSession: SessionDetails[];
 }
 
 export interface LabelValueProps {
   label: string;
-  value: string | null;
+  value: string | null | any;
   direction?: "row" | "column";
 }
 
 export interface IMarkerPosition {
   sessionName: string | null;
-  address: string | null;
-  img: string;
+  companyName: string | null;
+  sessionDate: string | null;
+  sessionType: string | null;
   lat: number;
   lng: number;
 }

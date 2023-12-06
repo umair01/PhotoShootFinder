@@ -36,7 +36,9 @@ const App: FunctionComponent = () => {
             background: theme.palette.primary.main,
           })}
         >
-          <Typography>All rights reserved.</Typography>
+          <Typography sx={(theme: Theme) => ({
+            color: theme.palette.common.white,
+          })}>All rights reserved.</Typography>
         </Box>
       </Box>
     </ThemeProvider>

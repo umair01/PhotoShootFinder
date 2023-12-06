@@ -38,11 +38,13 @@ function SwipeableTextMobileStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
   const maxSteps = images.length;
 
-  const handleNext = () => {
+  const handleNext = (e: any) => {
+    e.stopPropagation()
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
-  const handleBack = () => {
+  const handleBack = (e: any) => {
+    e.stopPropagation()
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
@@ -53,7 +55,7 @@ function SwipeableTextMobileStepper() {
   return (
     <Box
       sx={{
-        maxWidth: { sm: "100%", md: 300 },
+        maxWidth: { xs: "100%", sm: 320 },
         flexGrow: 1,
         borderRadius: 7.5,
         overflow: "hidden",
@@ -71,7 +73,7 @@ function SwipeableTextMobileStepper() {
               <Box
                 component="img"
                 sx={{
-                  height: 200,
+                  height: 250,
                   display: "block",
                   overflow: "hidden",
                   width: "100%",

@@ -37,3 +37,8 @@ body,
 .gm-style .gm-style-iw {
   padding: 0;
 }
+
+.gm-ui-hover-effect {
+  top: -3px !important;
+  right: -3px !important;
+}
