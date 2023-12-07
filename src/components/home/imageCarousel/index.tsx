@@ -18,7 +18,7 @@ const SwipeableTextMobileStepper: React.FunctionComponent<IImageCarousel> = ({
 }) => {
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
-  const maxSteps = images.length;
+  const maxSteps = images?.length ?? 0;
 
   const handleNext = (e: any) => {
     e.stopPropagation();
@@ -50,7 +50,7 @@ const SwipeableTextMobileStepper: React.FunctionComponent<IImageCarousel> = ({
         onChangeIndex={handleStepChange}
         enableMouseEvents
       >
-        {images.length > 0 ? (
+        {images?.length > 0 ? (
           images.map((image, index) => (
             <div key={index}>
               {Math.abs(activeStep - index) <= 2 ? (
@@ -91,7 +91,7 @@ const SwipeableTextMobileStepper: React.FunctionComponent<IImageCarousel> = ({
           <Button
             size="small"
             onClick={handleNext}
-            disabled={activeStep === maxSteps - 1 || !images.length}
+            disabled={activeStep === maxSteps - 1 || !images?.length}
           >
             {theme.direction === "rtl" ? (
               <KeyboardArrowLeft />
@@ -104,7 +104,7 @@ const SwipeableTextMobileStepper: React.FunctionComponent<IImageCarousel> = ({
           <Button
             size="small"
             onClick={handleBack}
-            disabled={activeStep === 0 || !images.length}
+            disabled={activeStep === 0 || !images?.length}
           >
             {theme.direction === "rtl" ? (
               <KeyboardArrowRight />

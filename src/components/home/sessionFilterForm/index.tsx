@@ -108,7 +108,17 @@ const MyForm: FunctionComponent<FormProps> = ({
           name="region"
           control={control}
           render={({ field }) => (
-            <Select {...field} className={classes.regionSelect}>
+            <Select
+              {...field}
+              className={classes.regionSelect}
+              displayEmpty
+              value={field.value || ""}
+            >
+              {/* Placeholder item */}
+              <MenuItem disabled value="">
+                 Region...
+              </MenuItem>
+
               {regions?.map((region, index) => (
                 <MenuItem key={index} value={region.Region}>
                   {region.Region}
@@ -126,12 +136,19 @@ const MyForm: FunctionComponent<FormProps> = ({
           render={({ field }) => (
             <Select
               {...field}
+              displayEmpty
               sx={{
                 borderRadius: 0,
                 borderTopRightRadius: responsiveInputs ? "30px" : 0,
                 borderBottomRightRadius: responsiveInputs ? "30px" : 0,
               }}
+              value={field.value || ""}
             >
+              {/* Placeholder item */}
+              <MenuItem disabled value="">
+                 Session...
+              </MenuItem>
+
               {sessions.map((option, index) => (
                 <MenuItem key={index} value={option}>
                   {option}
