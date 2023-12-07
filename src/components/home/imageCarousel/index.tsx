@@ -8,43 +8,25 @@ import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import SwipeableViews from "react-swipeable-views";
 import { autoPlay } from "react-swipeable-views-utils";
 
+import { IImageCarousel } from "../../../utils/models";
+import noImage from "../../../assets/noImage.svg";
+
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
-const images = [
-  {
-    label: "San Francisco – Oakland Bay Bridge, United States",
-    imgPath:
-      "https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60",
-  },
-  {
-    label: "Bird",
-    imgPath:
-      "https://images.unsplash.com/photo-1538032746644-0212e812a9e7?auto=format&fit=crop&w=400&h=250&q=60",
-  },
-  {
-    label: "Bali, Indonesia",
-    imgPath:
-      "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250",
-  },
-  {
-    label: "Goč, Serbia",
-    imgPath:
-      "https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60",
-  },
-];
-
-function SwipeableTextMobileStepper() {
+const SwipeableTextMobileStepper: React.FunctionComponent<IImageCarousel> = ({
+  images,
+}) => {
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
   const maxSteps = images.length;
 
   const handleNext = (e: any) => {
-    e.stopPropagation()
+    e.stopPropagation();
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   const handleBack = (e: any) => {
-    e.stopPropagation()
+    e.stopPropagation();
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
@@ -56,6 +38,7 @@ function SwipeableTextMobileStepper() {
     <Box
       sx={{
         maxWidth: { xs: "100%", sm: 320 },
+        minWidth: { xs: "100%", sm: 320 },
         flexGrow: 1,
         borderRadius: 7.5,
         overflow: "hidden",
@@ -67,23 +50,37 @@ function SwipeableTextMobileStepper() {
         onChangeIndex={handleStepChange}
         enableMouseEvents
       >
-        {images.map((step, index) => (
-          <div key={step.label}>
-            {Math.abs(activeStep - index) <= 2 ? (
-              <Box
-                component="img"
-                sx={{
-                  height: 250,
-                  display: "block",
-                  overflow: "hidden",
-                  width: "100%",
-                }}
-                src={step.imgPath}
-                alt={step.label}
-              />
-            ) : null}
-          </div>
-        ))}
+        {images.length > 0 ? (
+          images.map((image, index) => (
+            <div key={index}>
+              {Math.abs(activeStep - index) <= 2 ? (
+                <Box
+                  component="img"
+                  sx={{
+                    height: 250,
+                    display: "block",
+                    overflow: "hidden",
+                    maxWidth: { xs: "100%", sm: 320 },
+                    minWidth: { xs: "100%", sm: 320 },
+                  }}
+                  src={image.ImageUrl}
+                />
+              ) : null}
+            </div>
+          ))
+        ) : (
+          <Box
+            component="img"
+            sx={{
+              height: 250,
+              display: "block",
+              overflow: "hidden",
+              maxWidth: { xs: "100%", sm: 320 },
+              minWidth: { xs: "100%", sm: 320 },
+            }}
+            src={noImage}
+          />
+        )}
       </AutoPlaySwipeableViews>
       <MobileStepper
         steps={maxSteps}
@@ -94,7 +91,7 @@ function SwipeableTextMobileStepper() {
           <Button
             size="small"
             onClick={handleNext}
-            disabled={activeStep === maxSteps - 1}
+            disabled={activeStep === maxSteps - 1 || !images.length}
           >
             {theme.direction === "rtl" ? (
               <KeyboardArrowLeft />
@@ -104,7 +101,11 @@ function SwipeableTextMobileStepper() {
           </Button>
         }
         backButton={
-          <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
+          <Button
+            size="small"
+            onClick={handleBack}
+            disabled={activeStep === 0 || !images.length}
+          >
             {theme.direction === "rtl" ? (
               <KeyboardArrowRight />
             ) : (
@@ -115,6 +116,6 @@ function SwipeableTextMobileStepper() {
       />
     </Box>
   );
-}
+};
 
 export default SwipeableTextMobileStepper;

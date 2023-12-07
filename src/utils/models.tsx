@@ -35,7 +35,7 @@ export interface SessionDetails {
   SessionName: string | null;
   SessionRowID: number | null;
   photographer: Photographer;
-  // sessionDates: {SessionDate: string | null};
+  sessionImages: {ImageUrl: string}[]
   sessionDates: SessionDate[];
   sessionType: { SessionType: string | null };
 }
@@ -97,4 +97,8 @@ export interface Region {
   Longitude: number;
   Latitude: number;
   Region?: string;
+}
+
+export interface IImageCarousel {
+  images: {ImageUrl: string}[];
 }
