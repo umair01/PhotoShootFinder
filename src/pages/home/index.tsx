@@ -134,7 +134,7 @@ const Home: FunctionComponent = () => {
     setSessions(sessions);
   };
 
-  const handleMarkerIndex = (index: number | null) => {
+  const handleMarkerIndex = (index: number | null, onHover = false) => {
     if (index === markerIndex) {
       setMarkerIndex(null);
     } else {
@@ -142,7 +142,7 @@ const Home: FunctionComponent = () => {
         setResponsiveView();
       }
       setMarkerIndex(index);
-      if (index != null) {
+      if (index != null && !onHover) {
         setCenter({
           Longitude: Number(
             photographerSessions[index].LocationLongitude || "0"

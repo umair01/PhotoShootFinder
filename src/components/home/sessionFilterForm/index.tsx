@@ -19,6 +19,7 @@ import { ExpandMore } from "@mui/icons-material";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
 
 import { SessionFormProps, FormProps, Fields } from "../../../utils/models";
 
@@ -88,15 +89,18 @@ const MyForm: FunctionComponent<FormProps> = ({
   }, [watch]);
 
   const handle30Days = () => {
-    const currentDate = getValues("fromDate").add(30, "day");
-    const nextDate = currentDate.add(30, "day");
+    const fromDate = getValues("fromDate") || dayjs();
+    const currentDate = fromDate.add(30, "day");
+    const nextDate = currentDate?.add(30, "day");
     setValue("fromDate", currentDate);
     setValue("toDate", nextDate);
   };
 
   const handle90Days = () => {
-    const currentDate = getValues("fromDate").add(90, "day");
-    const nextDate = currentDate.add(90, "day");
+    const fromDate = getValues("fromDate") || dayjs();
+
+    const currentDate = fromDate.add(90, "day");
+    const nextDate = currentDate?.add(90, "day");
     setValue("fromDate", currentDate);
     setValue("toDate", nextDate);
   };
@@ -116,7 +120,7 @@ const MyForm: FunctionComponent<FormProps> = ({
             >
               {/* Placeholder item */}
               <MenuItem disabled value="">
-                 Region...
+                Region...
               </MenuItem>
 
               {regions?.map((region, index) => (
@@ -146,7 +150,7 @@ const MyForm: FunctionComponent<FormProps> = ({
             >
               {/* Placeholder item */}
               <MenuItem disabled value="">
-                 Session...
+                Session...
               </MenuItem>
 
               {sessions.map((option, index) => (
@@ -222,12 +226,14 @@ const MyForm: FunctionComponent<FormProps> = ({
           className={classes.button}
           variant="contained"
           color="primary"
-          onClick={() => reset({
-            sessionType: "",
-            region: "",
-            fromDate: "",
-            toDate: "",
-          })}
+          onClick={() =>
+            reset({
+              sessionType: "",
+              region: "",
+              fromDate: "",
+              toDate: "",
+            })
+          }
         >
           Reset
         </Button>

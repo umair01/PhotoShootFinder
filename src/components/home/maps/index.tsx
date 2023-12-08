@@ -41,7 +41,7 @@ const Maps: FunctionComponent<MapsProps> = ({
           lat: center?.Latitude || USLatitude,
           lng: center?.Longitude || USLongitude,
         }}
-        zoom={5}
+        zoom={center ? 7 : 4}
         onClick={() => onClick(null)}
         onLoad={handleMapLoad}
       >
@@ -51,9 +51,9 @@ const Maps: FunctionComponent<MapsProps> = ({
               key={index}
               position={{ lat: position.lat, lng: position.lng }}
               icon={"http://maps.google.com/mapfiles/ms/icons/green-dot.png"}
-              onMouseOver={() => onClick(index)}
+              onMouseOver={() => onClick(index, true)}
               onMouseOut={() => onClick(null)}
-              onMouseDown={() => onClick(index)}
+              onMouseDown={() => onClick(index, true)}
             >
               {markerIndex === index && (
                 <InfoWindow onCloseClick={() => onClick(null)}>

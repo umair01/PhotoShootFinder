@@ -81,7 +81,7 @@ interface Center {
   Latitude: number;
 }
 export interface MapsProps {
-  onClick?: (markerIndex: number | null) => void;
+  onClick?: (markerIndex: number | null, onHover?: boolean) => void;
   markerIndex?: number | null;
   markerPositions: IMarkerPosition[];
   center: Center | undefined;
