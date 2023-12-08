@@ -222,7 +222,12 @@ const MyForm: FunctionComponent<FormProps> = ({
           className={classes.button}
           variant="contained"
           color="primary"
-          onClick={() => reset({ region: "" })}
+          onClick={() => reset({
+            sessionType: "",
+            region: "",
+            fromDate: "",
+            toDate: "",
+          })}
         >
           Reset
         </Button>

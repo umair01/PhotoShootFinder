@@ -6,7 +6,7 @@ export const buildQueryString = (params: Record<string, any>): string => {
       if (key.includes("Date")) {
         // Format Date objects to a string suitable for URL
         return `${encodeURIComponent(key)}=${encodeURIComponent(
-          value.toISOString()
+          value ? value.toISOString() : value
         )}`;
       }
 

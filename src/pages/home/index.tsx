@@ -40,7 +40,7 @@ const Home: FunctionComponent = () => {
     maps: false,
   });
 
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState<number>(1);
   const [loading, setLoading] = useState(true);
   const [photographerSessions, setPhotographerSessions] = useState<
     SessionDetails[]
@@ -53,12 +53,13 @@ const Home: FunctionComponent = () => {
   const [center, setCenter] = useState<Region | null>();
   const cardRef = useRef<HTMLDivElement>(null);
 
-  const onSubmit = async (data: Fields, lazyLoad = false) => {
+  const onSubmit = async (data: Fields, lazyLoad = false, page = 1) => {
     const query = buildQueryString({ ...data, page: lazyLoad ? page : 1 });
     if (lazyLoad) {
       await lazyLoadPhotographersData(query);
     } else {
       await getPhotographerData(query);
+      setPage(1);
     }
     setFormValues(data);
   };
@@ -105,13 +106,16 @@ const Home: FunctionComponent = () => {
   };
 
   const handleScroll = async (e: any) => {
+    if (lazyLoadingData || loading || !loadData) return;
+
     const bottom =
       Math.round(e.target.scrollHeight - e.target.scrollTop) ===
       e.target.clientHeight;
     if (bottom) {
-      setPage((page) => page + 1);
+      let tempPage = page + 1;
+      setPage(tempPage);
       if (loadData) {
-        await onSubmit(formValues, true);
+        await onSubmit(formValues, true, tempPage);
         if (cardRef.current) {
           cardRef?.current?.scrollIntoView({
             behavior: "smooth",
@@ -238,12 +242,12 @@ const Home: FunctionComponent = () => {
                 sessionDate:
                   photographerSession?.sessionDates !== null &&
                   photographerSession?.sessionDates?.length > 0
-                    ? photographerSession?.sessionDates?.map(
-                        (date) => {
+                    ? photographerSession?.sessionDates
+                        ?.map((date) => {
                           return dayjs(date?.SessionDate).format("MM/DD");
-                        }
-                      ).join(", ")
-                    : "",
+                        })
+                        .join(", ")
+                    : null,
                 // sessionDate: dayjs(photographerSession?.sessionDates.SessionDate).format("MM/DD"),
                 sessionType: photographerSession.sessionType?.SessionType,
                 lat:

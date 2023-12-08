@@ -23,7 +23,9 @@ const Maps: FunctionComponent<MapsProps> = ({
               key={index}
               position={{ lat: position.lat, lng: position.lng }}
               icon={"http://maps.google.com/mapfiles/ms/icons/green-dot.png"}
-              onClick={() => onClick(index)}
+              onMouseOver={() => onClick(index)}
+              onMouseOut={() => onClick(null)}
+              onMouseDown={() => onClick(index)}
             >
               {markerIndex === index && (
                 <InfoWindow onCloseClick={() => onClick(null)}>
@@ -37,13 +39,35 @@ const Maps: FunctionComponent<MapsProps> = ({
                       {position.sessionName}
                     </Typography>
                     <Typography variant="body1">
-                      {position.companyName}
+                      <Box
+                        color={(theme) => theme.palette.text.secondary}
+                        fontWeight="bold"
+                        component="span"
+                      >
+                        Company:{" "}
+                      </Box>
+                      {position.companyName ?? "-"}
+                    </Typography>
+
+                    <Typography variant="body1">
+                      <Box
+                        color={(theme) => theme.palette.text.secondary}
+                        fontWeight="bold"
+                        component="span"
+                      >
+                        Session Dates:{" "}
+                      </Box>
+                      {position.sessionDate ?? "-"}
                     </Typography>
                     <Typography variant="body1">
-                      {position.sessionDate}
-                    </Typography>
-                    <Typography variant="body1">
-                      {position.sessionType}
+                      <Box
+                        color={(theme) => theme.palette.text.secondary}
+                        fontWeight="bold"
+                        component="span"
+                      >
+                        Session Type:{" "}
+                      </Box>
+                      {position.sessionType ?? "-"}
                     </Typography>
                   </Box>
                 </InfoWindow>
