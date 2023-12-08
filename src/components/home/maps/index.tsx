@@ -2,6 +2,8 @@ import { FunctionComponent, Fragment, useState, useEffect } from "react";
 import { Box, Typography } from "@mui/material";
 import { GoogleMap, MarkerF, InfoWindow } from "@react-google-maps/api";
 import { MapsProps } from "../../../utils/models";
+const USLatitude = 47.66607027721706
+const USLongitude = -107.2458309040137
 
 const Maps: FunctionComponent<MapsProps> = ({
   markerPositions,
@@ -9,12 +11,13 @@ const Maps: FunctionComponent<MapsProps> = ({
   markerIndex,
   onClick = () => {},
 }) => {
+  console.log("center",center)
   return (
     <Fragment>
       <GoogleMap
         mapContainerClassName="map-container"
-        center={{ lat: center?.Latitude || 0, lng: center?.Longitude || 0 }}
-        zoom={10}
+        center={{ lat: center?.Latitude || USLatitude, lng: center?.Longitude || USLongitude }}
+        zoom={7}
         onClick={() => onClick(null)}
       >
         {markerPositions.map((position, index) => {
