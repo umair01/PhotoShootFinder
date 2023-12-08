@@ -35,13 +35,12 @@ export interface SessionDetails {
   SessionName: string | null;
   SessionRowID: number | null;
   photographer: Photographer;
-  sessionImages: {ImageUrl: string}[]
+  sessionImages: { ImageUrl: string }[];
   sessionDates: SessionDate[];
   sessionType: { SessionType: string | null };
-
 }
-interface SessionDate{
-  SessionDate:string
+interface SessionDate {
+  SessionDate: string;
 }
 export interface Photographer {
   CompanyNotes: string | null;
@@ -86,6 +85,7 @@ export interface MapsProps {
   markerIndex?: number | null;
   markerPositions: IMarkerPosition[];
   center: Center | undefined;
+  onDragMap: Function;
 }
 
 export interface IActiveMarker {
@@ -101,5 +101,5 @@ export interface Region {
 }
 
 export interface IImageCarousel {
-  images: {ImageUrl: string}[];
+  images: { ImageUrl: string }[];
 }

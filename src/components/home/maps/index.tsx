@@ -2,23 +2,48 @@ import { FunctionComponent, Fragment, useState, useEffect } from "react";
 import { Box, Typography } from "@mui/material";
 import { GoogleMap, MarkerF, InfoWindow } from "@react-google-maps/api";
 import { MapsProps } from "../../../utils/models";
-const USLatitude = 47.66607027721706
-const USLongitude = -107.2458309040137
+const USLatitude = 47.66607027721706;
+const USLongitude = -107.2458309040137;
 
 const Maps: FunctionComponent<MapsProps> = ({
   markerPositions,
   center,
   markerIndex,
   onClick = () => {},
+  onDragMap,
 }) => {
-  console.log("center",center)
+  const [map, setMap] = useState<google.maps.Map | null>(null);
+  console.log("center", center);
+
+  const handleMapLoad = (map: google.maps.Map) => {
+    setMap(map);
+    map.addListener("dragend", () => {
+      if (map) {
+        const newCenter = map?.getCenter()?.toJSON();
+        const bounds = map?.getBounds();
+        const ne = bounds?.getNorthEast().toJSON();
+        const sw = bounds?.getSouthWest().toJSON();
+        onDragMap(newCenter?.lat, newCenter?.lng, {
+          neLat: ne?.lat,
+          swLat: sw?.lat,
+          neLng: ne?.lng,
+          swLng: sw?.lng,
+        });
+      }
+    });
+  };
+
   return (
     <Fragment>
       <GoogleMap
         mapContainerClassName="map-container"
-        center={{ lat: center?.Latitude || USLatitude, lng: center?.Longitude || USLongitude }}
-        zoom={7}
+        center={{
+          lat: center?.Latitude || USLatitude,
+          lng: center?.Longitude || USLongitude,
+        }}
+        zoom={5}
         onClick={() => onClick(null)}
+        onLoad={handleMapLoad}
       >
         {markerPositions.map((position, index) => {
           return (

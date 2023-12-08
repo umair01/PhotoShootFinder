@@ -159,6 +159,27 @@ const Home: FunctionComponent = () => {
 
   if (!isLoaded) return <Loader />;
 
+  const onDragMap = async (
+    LocationLatitude: number,
+    LocationLongitude: number,
+    bounds: {
+      neLat: number;
+      swLat: number;
+      neLng: number;
+      swLng: number;
+    }
+  ) => {
+    const query = buildQueryString({
+      ...formValues,
+      page: 1,
+      ...bounds,
+    });
+    setCenter({ Latitude: LocationLatitude, Longitude: LocationLongitude });
+    await getPhotographerData(query);
+    setPage(1);
+    setFormValues({ ...formValues, region: "" });
+  };
+
   return (
     <Box
       sx={{
@@ -261,6 +282,7 @@ const Home: FunctionComponent = () => {
               center ||
               regions.find((region) => formValues.region == region.Region)
             }
+            onDragMap={onDragMap}
           />
         </Box>
       </Box>
