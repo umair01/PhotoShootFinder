@@ -86,6 +86,8 @@ export interface MapsProps {
   markerPositions: IMarkerPosition[];
   center: Center | undefined;
   onDragMap: Function;
+  formValues: Fields;
+  onChangeCenter: Function;
 }
 
 export interface IActiveMarker {

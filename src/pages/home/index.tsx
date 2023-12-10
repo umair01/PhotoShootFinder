@@ -283,6 +283,16 @@ const Home: FunctionComponent = () => {
               regions.find((region) => formValues.region == region.Region)
             }
             onDragMap={onDragMap}
+            formValues={formValues}
+            onChangeCenter={(
+              LocationLatitude: number,
+              LocationLongitude: number
+            ) => {
+              setCenter({
+                Latitude: LocationLatitude,
+                Longitude: LocationLongitude,
+              });
+            }}
           />
         </Box>
       </Box>

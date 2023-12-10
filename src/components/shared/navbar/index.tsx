@@ -46,15 +46,18 @@ const Navbar: FunctionComponent = () => {
         <Toolbar sx={{ justifyContent: "space-between" }} disableGutters>
           <Typography
             variant="h6"
+            onClick={() => {
+              navigate("/");
+            }}
             noWrap
             sx={{
               display: "flex",
-
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
+              cursor: "pointer",
             }}
           >
             PhotoShootFinder

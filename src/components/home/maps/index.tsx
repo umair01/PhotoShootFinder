@@ -2,8 +2,8 @@ import { FunctionComponent, Fragment, useState, useEffect } from "react";
 import { Box, Typography } from "@mui/material";
 import { GoogleMap, MarkerF, InfoWindow } from "@react-google-maps/api";
 import { MapsProps } from "../../../utils/models";
-const USLatitude = 47.66607027721706;
-const USLongitude = -107.2458309040137;
+const USLatitude = 37.828724;
+const USLongitude = -122.355537;
 
 const Maps: FunctionComponent<MapsProps> = ({
   markerPositions,
@@ -11,28 +11,41 @@ const Maps: FunctionComponent<MapsProps> = ({
   markerIndex,
   onClick = () => {},
   onDragMap,
+  formValues,
+  onChangeCenter,
 }) => {
   const [map, setMap] = useState<google.maps.Map | null>(null);
-  console.log("center", center);
-
+  const [drag, setDrag] = useState(false);
   const handleMapLoad = (map: google.maps.Map) => {
     setMap(map);
     map.addListener("dragend", () => {
       if (map) {
         const newCenter = map?.getCenter()?.toJSON();
-        const bounds = map?.getBounds();
-        const ne = bounds?.getNorthEast().toJSON();
-        const sw = bounds?.getSouthWest().toJSON();
-        onDragMap(newCenter?.lat, newCenter?.lng, {
+        onChangeCenter(newCenter?.lat, newCenter?.lng);
+        setDrag(true);
+      }
+    });
+  };
+  useEffect(() => {
+    if (drag) {
+      const newCenter = map?.getCenter()?.toJSON();
+      const bounds = map?.getBounds();
+      const ne = bounds?.getNorthEast().toJSON();
+      const sw = bounds?.getSouthWest().toJSON();
+      onDragMap(
+        newCenter?.lat,
+        newCenter?.lng,
+        {
           neLat: ne?.lat,
           swLat: sw?.lat,
           neLng: ne?.lng,
           swLng: sw?.lng,
-        });
-      }
-    });
-  };
-
+        },
+        formValues
+      );
+      setDrag(false);
+    }
+  }, [drag]);
   return (
     <Fragment>
       <GoogleMap
@@ -41,7 +54,7 @@ const Maps: FunctionComponent<MapsProps> = ({
           lat: center?.Latitude || USLatitude,
           lng: center?.Longitude || USLongitude,
         }}
-        zoom={center ? 7 : 4}
+        zoom={center ? 8 : 4}
         onClick={() => onClick(null)}
         onLoad={handleMapLoad}
       >
