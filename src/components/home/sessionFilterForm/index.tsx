@@ -89,17 +89,14 @@ const MyForm: FunctionComponent<FormProps> = ({
   }, [watch]);
 
   const handle30Days = () => {
-    const fromDate = getValues("fromDate") || dayjs();
-    const currentDate = fromDate.add(30, "day");
+    const currentDate = dayjs().add(30, "day");
     const nextDate = currentDate?.add(30, "day");
     setValue("fromDate", currentDate);
     setValue("toDate", nextDate);
   };
 
   const handle90Days = () => {
-    const fromDate = getValues("fromDate") || dayjs();
-
-    const currentDate = fromDate.add(90, "day");
+    const currentDate = dayjs().add(90, "day");
     const nextDate = currentDate?.add(90, "day");
     setValue("fromDate", currentDate);
     setValue("toDate", nextDate);
