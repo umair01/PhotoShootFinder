@@ -182,16 +182,7 @@ const Cards: FunctionComponent<CardsProps> = ({
                   />
                   <LabelValue
                     label="How to Book"
-                    value={
-                      // <Link
-                      //   target="_blank"
-                      //   rel="noreferrer"
-                      //   href={session.HowToBook||''}
-                      //   onClick={(e: any) => e.stopPropagation()}
-                      // >
-                      session.HowToBook
-                      // {/* </Link> */}
-                    }
+                    value={session.HowToBook}
                   />
                   <LabelValue
                     label="Session Types"
