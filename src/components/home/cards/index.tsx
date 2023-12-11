@@ -66,7 +66,7 @@ const Cards: FunctionComponent<CardsProps> = ({
                 onClick(index);
               }}
             >
-              <SwipeableTextMobileStepper images={session.sessionImages}/>
+              <SwipeableTextMobileStepper images={session.sessionImages} />
               <Box className={classes.card}>
                 {/* {dayjs().isAfter(session.sessionDates.SessionDate) && (
                   <Typography variant="body1" fontWeight="bold" color="#FF0000">
@@ -128,9 +128,11 @@ const Cards: FunctionComponent<CardsProps> = ({
                   value={
                     session?.sessionDates !== null &&
                     session?.sessionDates?.length > 0
-                      ? session?.sessionDates.map((date) => {
-                          return dayjs(date.SessionDate).format("MM/DD");
-                        }).join(", ")
+                      ? session?.sessionDates
+                          .map((date) => {
+                            return dayjs(date.SessionDate).format("MM/DD");
+                          })
+                          .join(", ")
                       : ""
                   }
                 />
@@ -181,14 +183,14 @@ const Cards: FunctionComponent<CardsProps> = ({
                   <LabelValue
                     label="How to Book"
                     value={
-                      <Link
-                        target="_blank"
-                        rel="noreferrer"
-                        href={session.HowToBook||''}
-                        onClick={(e: any) => e.stopPropagation()}
-                      >
-                        {session.HowToBook}
-                      </Link>
+                      // <Link
+                      //   target="_blank"
+                      //   rel="noreferrer"
+                      //   href={session.HowToBook||''}
+                      //   onClick={(e: any) => e.stopPropagation()}
+                      // >
+                      session.HowToBook
+                      // {/* </Link> */}
                     }
                   />
                   <LabelValue
@@ -251,7 +253,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexDirection: "column",
     width: "100%",
 
-    height: "298px",
+    height: "fit-content",
     [theme.breakpoints.down("sm")]: {
       height: "100%",
     },
