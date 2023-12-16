@@ -44,7 +44,7 @@ const Navbar: FunctionComponent = () => {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar sx={{ justifyContent: "space-between" }} disableGutters>
-          <Typography
+          {/* <Typography
             variant="h6"
             onClick={() => {
               navigate("/");
@@ -59,9 +59,16 @@ const Navbar: FunctionComponent = () => {
               textDecoration: "none",
               cursor: "pointer",
             }}
-          >
-            PhotoShootFinder
-          </Typography>
+          > */}
+          <img
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              navigate("/");
+            }}
+            width={"100px"}
+            src="/public/logo.png"
+          />
+          {/* </Typography> */}
 
           <Box sx={{ display: "flex" }}>
             <IconButton
