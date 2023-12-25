@@ -7,7 +7,7 @@ async function bootstrap() {
   const port = process.env.PORT;
   const app = await NestFactory.create(AppModule);
   app.use(helmet());
-  app.enableCors();
+  app.enableCors({ origin: 'http://54.153.54.163/' });
   app.setGlobalPrefix('api');
 
   const config = new DocumentBuilder().setTitle('PhotographerSessions').setVersion('1.0').addTag('api').build();
