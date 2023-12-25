@@ -66,7 +66,7 @@ const Navbar: FunctionComponent = () => {
               navigate("/");
             }}
             width={"100px"}
-            src="/public/logo.png"
+            src="/logo.png"
           />
           {/* </Typography> */}
 
