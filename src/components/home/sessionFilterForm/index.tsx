@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   inputs: { borderRadius: 0 },
   select: {
-    width: "170px !important",
+    width: "250px !important",
   },
   regionSelect: {
     borderRadius: 0,
@@ -146,8 +146,8 @@ const MyForm: FunctionComponent<FormProps> = ({
               value={field.value || ""}
             >
               {/* Placeholder item */}
-              <MenuItem disabled value="">
-                Session...
+              <MenuItem value="">
+                Choose Session...
               </MenuItem>
 
               {sessions.map((option, index) => (

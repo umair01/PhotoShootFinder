@@ -65,7 +65,7 @@ const Navbar: FunctionComponent = () => {
             onClick={() => {
               navigate("/");
             }}
-            width={"100px"}
+            width={"150px"}
             src="/logo.png"
           />
           {/* </Typography> */}
