@@ -146,9 +146,7 @@ const MyForm: FunctionComponent<FormProps> = ({
               value={field.value || ""}
             >
               {/* Placeholder item */}
-              <MenuItem value="">
-                Choose Session...
-              </MenuItem>
+              <MenuItem value="">All Session Types</MenuItem>
 
               {sessions.map((option, index) => (
                 <MenuItem key={index} value={option}>
@@ -224,11 +222,11 @@ const MyForm: FunctionComponent<FormProps> = ({
           variant="contained"
           color="primary"
           onClick={() =>
-            reset({
+            reset({            
               sessionType: "",
-              region: "",
-              fromDate: "",
-              toDate: "",
+              region: "SF Bay Area",
+              fromDate: dayjs(),
+              toDate: dayjs().add(30, "day"),
             })
           }
         >
